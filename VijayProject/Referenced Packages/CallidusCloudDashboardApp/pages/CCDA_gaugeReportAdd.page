@@ -1,0 +1,148 @@
+<apex:page controller="ccsfDashboardAp.CCDA_ReportController" action="{!setReportSaveMode}" sidebar="false" showheader="false">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!header}" settingsImage="{!screenConstants['gauge.settingsImage']}"></c:CCDA_CommonHeader>
+  <style>
+          input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+  </style>
+  <apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/styles.css')}" />
+  <apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/new.css')}" />
+  <div class="aligned_cont2">
+  <apex:pageMessages id="mymsg" />
+  <apex:form id="frmAddReport">
+          <script type="text/javascript">
+            function getResultTypeValue(id){
+                displayFunction(document.getElementById(id).value);   
+            }
+            function changeColor(elmnt){
+                elmnt.style.color='#000000';
+            }
+          </script> 
+          
+        <apex:actionFunction action="{!resultTypeClick}" name="displayFunction"  rerender="rerendersection2">
+                <apex:param name="resultType" value="{!$Component.resultType}"/>
+        </apex:actionFunction>
+         
+        
+      <c:formblock alignment="vertical">
+        <c:formgroup >
+           <h3> <apex:outputText value="{!screenConstants['gauge.sectionHeader']}" /></h3>
+        </c:formgroup>
+        
+         <c:formgroup >
+          {!screenConstants['gauge.Name']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.Name']}" title="{!screenConstants['gauge.Name']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['Name']]}"></apex:inputText>
+        </c:formgroup>
+      
+        <c:formgroup >
+        {!screenConstants['gauge.DisplayName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.DisplayName']}" title="{!screenConstants['gauge.DisplayName']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['DisplayName']]}"></apex:inputText>
+        </c:formgroup> 
+       
+
+        <c:formgroup >
+        {!screenConstants['gauge.SortOrder']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.SortOrder']}" title="{!screenConstants['gauge.SortOrder']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['SortOrder']]}"></apex:inputText>
+        </c:formgroup> 
+        
+               
+        <c:formgroup > 
+        {!screenConstants['gauge.ResultType']}  
+         <label class="select-box">
+          <apex:selectList onchange="getResultTypeValue('{!$Component.resultType}');changeColor(this);"  id="resultType" size="1" value="{!report[objectFieldMap[visualComponents['Gauge']]['ResultType']]}" styleClass="form-control" html-placeholder="{!screenConstants['gauge.ResultType']}" title="{!screenConstants['gauge.ResultType']}">  
+            <apex:selectOptions value="{!resultTypes}"/>
+          </apex:selectList>
+         </label>
+        </c:formgroup>
+        
+        <c:formgroup >
+        {!screenConstants['gauge.HighColor']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.HighColor']}" title="{!screenConstants['gauge.HighColor']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['HighColor']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.HighThreshold']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.HighThreshold']}" title="{!screenConstants['gauge.HighThreshold']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['HighThreshold']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.LowColor']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.LowColor']}" title="{!screenConstants['gauge.LowColor']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['LowColor']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.LowThreshold']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.LowThreshold']}" title="{!screenConstants['gauge.LowThreshold']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['LowThreshold']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.MaxValue']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.MaxValue']}" title="{!screenConstants['gauge.MaxValue']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['MaxValue']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.MinValue']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.MinValue']}" title="{!screenConstants['gauge.MinValue']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['MinValue']]}"></apex:inputText>
+        </c:formgroup> 
+        
+        <c:formgroup >
+        {!screenConstants['gauge.UnitType']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['gauge.UnitType']}" title="{!screenConstants['gauge.UnitType']}" value="{!report[objectFieldMap[visualComponents['Gauge']]['UnitType']]}"></apex:inputText>
+        </c:formgroup> 
+        
+
+        <!--
+        <c:formgroup >
+        <apex:outputPanel id="rerendersection2">
+           <h3> <apex:outputText value="Result List" /></h3>                    
+      
+                  <apex:selectList id="resultType" size="1" value="{!report[objectFieldMap[visualComponents['Gauge']]['Result']]}" styleClass="form-control" html-placeholder="{!screenConstants['gauge.ResultType']}" title="{!screenConstants['gauge.ResultType']}">  
+                    <apex:selectOptions value="{!resultValues}"/>
+                  </apex:selectList>
+        </apex:outputPanel>
+        </c:formgroup>         
+       -->
+        <c:formgroup >
+               <h3> <apex:outputText value="{!screenConstants['gauge.ResultList']}" /></h3>       
+      <!-- <div class="sg-component-container center clear">
+       <div class="mbm pos-rel">
+         <span class="label--icon-r icon-utility-right size-full"></span>
+            <a class="size-full plm prx pvm bg-secondary-btn input input--picklist" title="Picklist Value" name="picklist" href="javascript:void(0)">
+             <label class="dib mrs f5 text-color-2">Label</label><span class="text-color-1 dib">Picklist Value</span>
+            </a>
+      </div>
+     </div> -->
+            <apex:dataList id="rerendersection2" value="{!reportLists}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.repObject[objectFieldMap[rep.customObjName]['depDisplayName']]}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+                <c:formgroup >
+
+ 
+       <h3> <apex:outputText value="{!screenConstants['visualizationPeriod']}" /></h3>       
+         <!-- <b> <apex:outputText value="{!screenConstants['report.single']}" /></b>-->
+            <b>Default :</b> 
+            <label class="select-box">
+            <apex:selectList value="{!visualizationTimeFrame[0].defaultTimeFrame}" size="1" onchange="changeColor(this);">
+              <apex:selectOptions value="{!visualizationTimeFrame[0].visualizationTimeFrameOptions}"/>                  
+            </apex:selectList>
+            </label>
+            <br/>
+            <apex:dataList value="{!visualizationTimeFrame}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.customObjName}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+        
+      </c:formblock> 
+      <apex:commandButton value="Save" action="{!saveReportConfig}" style="color:white !important;" styleClass="btn-default btn-lg" rendered="{!showSaveButton}"/>
+  </apex:form> 
+  </div>
+</apex:page>

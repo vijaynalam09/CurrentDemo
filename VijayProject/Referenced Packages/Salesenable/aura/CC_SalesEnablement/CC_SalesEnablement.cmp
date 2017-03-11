@@ -1,0 +1,593 @@
+<aura:component controller="CALSE.CC_SalesenablementCon" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+	<ltng:require styles="/resource/CALSE__CCDA_StaticRes/Styles/new.css,						                            
+                          /resource/CALSE__SLDS0102/assets/styles/salesforce-lightning-design-system-vf.css,
+                          /resource/CALSE__sldc,
+                          /resource/CALSE__iCenteraUI" 
+                  scripts="/resource/CALSE__jQuery,
+                           /resource/CALSE__VisualStrap_Resources/js/bootstrap.min.js,
+                           /resource/CALSE__CCDA_StaticRes/js/jquerymin.js,
+                           /resource/CALSE__CCDA_StaticRes/js/globalizemin.js,
+                           /resource/CALSE__CCDA_StaticRes/js/dxchart.js,
+                           /resource/CALSE__CCDA_StaticRes/js/knockout.js,
+                           /resource/CALSE__CCDA_StaticRes/js/chartUtilJs.js"
+                  afterScriptsLoaded="{!c.doInit}"/>    
+    
+    <!--<aura:handler event="force:refreshView" action="{!c.doInit}" />-->
+    <aura:attribute name="recordId" type="String" default=""/>    
+    <CALSE:S_Collapsible header="CallidusCloud Sales Enablement">    
+        <div class="slds-spinner--large" style="margin-left: 45%;" aura:id="spinner">
+            <img src="/resource/CALSE__sldc_spinner" alt="" />
+        </div>
+        <!-- Body goes here-->
+        <div aura:id="mainDiv" style="margin-top:10px;display:none;">
+        	<div id="mainContent">
+            	    <CALSE:Salesenable_Recomandations header="Recommendations">
+                    <aura:if isTrue="{!v.showRecommendations}">
+                        <CALSE:Salesenable_Recomandationsub header="Items">
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" style="background-color: #f4f6f9;table-layout: fixed">
+                                <thead>
+                                    <tr class="slds-text-heading--label">
+                                        <th scope="col" >                                    
+                                            TITLE                                       
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <div style="overflow-y:scroll;max-height:200px;width:100%">
+                                        <aura:iteration items="{!v.recommendDocs}" var="e">
+                                            <tr role="row">
+                                                <td data-label="Title">
+                                                    
+                                                    <a onclick="{!c.docDetails}"  data-record="{!e.Index}" ><img src="{!e.doc.IconURL}" align="top"/></a>
+                                                    <a title="{!e.doc.Title}" onclick="{!c.docDetails}"  data-record="{!e.Index}"  style="padding-left: 8px;">{!e.doc.Title}</a>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </div>
+                                </tbody>
+                            </table>    
+                        </CALSE:Salesenable_Recomandationsub>
+                        
+                        <CALSE:Salesenable_Recomandationsub header="Binders">
+                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" style="background-color: #f4f6f9;table-layout: fixed">
+                                <thead>
+                                    <tr class="slds-text-heading--label">
+                                        <th scope="col" >
+                                            TITLE
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <div style="overflow-y:scroll;max-height:200px;width:100%;">
+                                        <aura:iteration items="{!v.recommendBinds}" var="e">
+                                            <tr role="row">
+                                                <td data-label="Title">
+                                                    <img src="{!$Resource.CALSE__folderIcon}" width="16" height="22" style="padding-bottom: 3px;"/> 
+                                                    <a title="{!e.Name}" data-record="{!e.BinderID}" onclick="{!c.previewBinder}" style="padding-left: 8px;">{!e.Name}</a>    
+                                                </td>
+                                            </tr>
+                                        </aura:iteration>
+                                    </div>
+                                </tbody>
+                            </table>
+                        </CALSE:Salesenable_Recomandationsub>
+                        <aura:set attribute="else">
+                            <div style="margin: 0px 0px 0px 20px !important;display:none;" aura:id="msgDiv">
+                                No recommendations were found.
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                    
+                </CALSE:Salesenable_Recomandations>
+                <CALSE:Salesenable_Recomandations header="CheckList">
+                    <div id="checkListContent" style="margin: 0px 0px 0px 20px !important;font-size:15px;">
+                        <aura:if isTrue="{!v.checklistItems}">
+                        <strong>Activities to move the deal forward</strong>
+                        <table >
+                            <tbody>
+                                <div style="overflow-y:scroll;max-height:200px;width:100%">
+                                    <aura:iteration items="{!v.checklistItems}" var="e">
+                                        <tr role="row">
+                                            <aura:if isTrue="{!e.IsChecked}">
+                                                <td data-label="Title" class="rowTd" style="font-weight:bold;color:grey;">
+                                                    <input type="checkbox" checked="{!e.IsChecked}" onchange="{!c.saveSnippet}" data-record="{!e.Id}"/>
+                                                    <span style="padding-left: 8px;">{!e.Title}</span>    
+                                                </td>
+                                                <aura:set attribute="else">
+                                                <td data-label="Title" class="rowTd">
+                                                    <input type="checkbox" checked="{!e.IsChecked}" onchange="{!c.saveSnippet}" data-record="{!e.Id}"/>
+                                                    <span style="padding-left: 8px;">{!e.Title}</span>    
+                                                </td>
+                                            </aura:set>
+                                        </aura:if>
+                                            
+                                        </tr>
+                                    </aura:iteration>
+                                </div>
+                            </tbody>
+                        </table>
+                            <aura:set attribute="else">
+                            	No checklist items were found.
+                            </aura:set>
+                            </aura:if>
+                    </div>
+                </CALSE:Salesenable_Recomandations>
+                <CALSE:Salesenable_Recomandations header="Subject Matter Expert(s)">
+                    <div id="expertsContent" style="overflow-y:scroll;max-height:200px;margin: 0px 0px 0px 20px !important;">
+                    	<aura:if isTrue="{!v.showSMEs}">
+                            <aura:iteration items="{!v.SMEs}"  var="sme">
+    							<aura:if isTrue="{!sme.IsToShow}">
+    
+                                        <img style="width: 50px; float: left;" src="{!sme.ProfilePictureURL}" align="left" width="50" height="50"/>
+    
+                                        <div style="margin-left:60px; margin-top:0px;">
+                                            <strong>{!sme.FirstName}&nbsp;{!sme.LastName}</strong><br/>
+                                            <span>
+                                                <a href="{!'mailto:'+sme.Email}">{!sme.Email}</a>
+                                                <br/>
+                                                Phone: 
+                                                <aura:iteration items="{!sme.PhoneNumbers}"  var="phone">
+                                                    {!phone.Value}&nbsp;
+                                                </aura:iteration>
+                                                <br/>
+                                                Location:&nbsp;{!sme.SMELocation.Name}
+                                                <br/>
+                                                Expertise: 
+                                                <aura:iteration items="{!sme.SMEExpertise}"  var="subject">
+                                                    {!subject.Name}&nbsp;
+                                                </aura:iteration>
+                                            </span>
+                                        </div>
+                                        <hr noshade="noshade" style="border-top: 1px solid #F0F0F0; color:#F0F0F0; background-color:#F0F0F0;margin: 10px 0px 10px 0px !important;"/>
+    
+                                    </aura:if>
+                                </aura:iteration>
+                            <aura:set attribute="else">
+                            	No subject matter expert(s) were found.
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </CALSE:Salesenable_Recomandations>
+                <CALSE:Salesenable_Recomandations header="Portal Activity">
+                      <div style="margin: 0px 0px 0px 20px !important;">
+                          <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" style="background-color: #f4f6f9;">
+                            <tbody>
+                                <tr>
+                                    <td scope="col">
+                                        <a onclick="{!c.AddOppToPortal}" style="font-size:15px">Add Opportunity to Portal</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td scope="col">
+                                        <a onclick="{!c.CreateDealReport}"  style="font-size:15px">Create Deal Report</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                           </table>
+                      </div>
+                </CALSE:Salesenable_Recomandations>
+            </div>
+        </div>
+        
+        <!-- Pop Up block -->
+        <div aura:id="dialogBackground" style="width:100%;height:300%;position:absolute;left:0;top:0;z-index:80;display:none;background-color:black;opacity: 0.20;filter: alpha(opacity = 20);"/>
+        <div id="popDiv" aura:id="popDiv" style="width:70%;min-width:450px;max-width: 1000px; display:none; top: 200px;left: 200px;position: absolute;background-color:white;z-index: 100;">
+            <div class="slds-spinner--large" style="margin-left: 45%;" aura:id="spinner2">
+                <img src="/resource/CALSE__sldc_spinner" alt="" />
+            </div>
+            <!--<div aura:id="previewDoc" style="width:100%;background-color:white;display:none;">
+                <iframe src="{!v.previewURL}" style="width: 100%;height: 450px;overflow:auto;"/>
+                <div width="100%" style="text-align:center;"><ui:button label="Close" press="{!c.closePopup}"/></div>
+            </div>-->
+            <div aura:id="previewBinder" style="width:100%;background-color:white;display:none;">
+            	<table height="100%" style="margin-left:10px;width:98%;margin-top:10px;">
+                    <tr>
+                        <td align="left" width="100%" height="30" style="font-size:150%;text-align:center;" colspan="2">
+                            <b>Binder Details</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="100%">
+                    
+
+    
+                            <table width="90%" height="100%" class="InputFormTable">
+                            <tr>
+                                <td align="left">
+                                    <B>Name</B>
+                                    <br/>
+                                    <span class="normal">{!v.selBinder.Name}</span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Description</B>
+                                    <br/>
+                                    <span class="normal">{!v.selBinder.Description}</span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Items</B>
+                                    <br/>
+                                    <div style="overflow: auto; max-height: 200px;">
+                                        <span class="normal" >
+                                            <aura:iteration items="{!v.selBinder.Items}"  var="item">
+                                            	<img src="{!item.IconURL}" align="top"/>&nbsp;
+                                                <a href="{!item.URL}" target="_blank">{!item.Title}</a>
+                                                  <!-- <a href="https://salesgenius.icentera.com/login.asp?page=%2Fmyre_viewbinder%2Easp%3Fid%3D335" target="_blank">{!item.Title}</a>-->
+                                                <br/>
+                                            </aura:iteration>
+                                        </span>
+                                    </div><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Created</B>
+                                    <br/>
+                                    <span class="normal">{!v.selBinder.Created}</span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Last Updated</B>
+                                    <br/>
+                                    <span class="normal">{!v.selBinder.LastUpdated}</span><br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Shared</B>
+                                    <br/>
+                                    <span class="normal">
+                                    	<aura:if isTrue="{!v.selBinder.Shared}">
+                                            Yes
+                                            <aura:set attribute="else">
+                                            No
+                                            </aura:set>
+                                        </aura:if>
+                                    </span>
+                                </td>
+                            </tr>
+                            </table>
+                         </td>
+                    </tr>
+                    <tr style="height:20px:"><td colspan="2"/></tr>
+                    <tr><td colspan="2" style="text-align:center;"><span style="font-size: 100%;">Click <b><a href="{!v.selBinder.ViewURL}" target="_blank">here</a></b> to open binder in Enablement.</span></td></tr>
+                    <tr><td colspan="2" style="text-align:center;"><ui:button label="Close" press="{!c.closePopup}"/></td></tr>
+                </table>
+                
+                
+            </div>
+            <div aura:id="docDetails" style="width:100%;background-color:white;display:none;">
+            	<table height="100%" style="margin-left:10px;width:98%;margin-top:10px;">
+                    <tr>
+                        <td align="left" width="100%" height="30" style="font-size:150%;text-align:center;" colspan="2">
+                            <b>Document Details</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="100%">
+                            <table width="90%" height="100%" class="InputFormTable">
+                            <tr>
+                                <td align="left">
+                                    <B>Name</B>
+                                    <br/>
+                                    <span class="normal">{!v.selDoc.Title}</span>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Description</B>
+                                    <br/>
+                                    <span class="normal">{!v.selDoc.Description}</span>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Owner</B>
+                                    <br/>
+                                    <span class="normal">{!v.selDoc.Owner}
+                                    </span>
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    <B>Last Updated</B>
+                                    <br/>
+                                    <span class="normal">{!v.selDoc.LastUpdated}</span>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td align="left">
+                                    <B>Download Count</B>
+                                    <br/>
+                                    <span class="normal">{!v.selDoc.DownloadCount}</span>
+                                </td>
+                            </tr>
+                            </table>
+                    
+                         </td>
+                    </tr>
+                    
+                    <tr style="height:20px:"><td colspan="2"/></tr>
+                    <!--<tr><td colspan="2" style="text-align:center;"><span style="font-size: 100%;">Click <b><a href="{!v.selDoc.previewUrl}" target="_blank">here</a></b> to download document.</span></td></tr>-->
+                     <!--<tr><td colspan="2" style="text-align:center;"><ui:button label="Close" press="{!c.closePopup}"/></td></tr>-->
+                    <tr><td colspan="2" style="text-align:center;">
+                        <ui:button label="Add item to Portal" press="{!c.addItemToPortal}"/>
+                        <ui:button label="Send Email" press="{!c.emailFile}"/>
+                        <ui:button label="Preview" press="{!c.previewFile}"/>
+                        <ui:button label="Download" press="{!c.downloadFile}"/>
+                        <ui:button class="slds-button--neutral" label="Close" press="{!c.closePopup}"/></td></tr>
+                </table>
+            </div>
+            
+            <div aura:id="AddOpptoPortal" style="width:100%;background-color:white;display:none;">
+                <table width="100%" height="100%">
+                    <tr>
+                        <td align="left" width="100%" height="30" style="font-size:150%;text-align:center;" colspan="2">
+                            <b>Add Opportunity to Portal</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="40%" height="100%" valign="top" style="vertical-align: top;">
+                            <table width="100%" height="100%">
+                                <tr>
+                                    <td align="left" style="padding-left: 5px;" valign="top">
+                                        <b>Option-1: Select a Portal &amp; Add</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="true"  style="padding-left: 10px;">
+                                        <br/>
+                                        <select class="slds-select" id="portalID" aura:id="portalID" value="{!v.selectedPortalId}"  size="8" style="width: 80%;">
+                                            <aura:iteration items="{!v.portalOptions}" var="po">
+                                                <option value="{!po.Value}">{!po.Label}</option>
+                                            </aura:iteration>
+                                        </select>
+                                        <br/>
+                                        <br/>
+                                        <br/><br/><br/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding-left: 10px;padding-top: 11px;">
+                                        <ui:button label="Add" press="{!c.linkToPortal}" />
+                                    </td>
+                                </tr>
+                            </table>
+                         </td>
+                        
+                        <td style="border-left:1px solid #666;vertical-align: top;"  width="60%" height="100%" valign="top">
+                            <table width="100%" height="100%">
+                                <tr>
+                                    <td align="left" colspan="2" nowrap="true"  style="padding-left: 5px;"  valign="top">
+                                        <b>Option-2: Create New Portal &amp; Add</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="true" style="padding-left: 10px;">
+                                        <br/>Portal Name :
+                                        <input type="Text" value="{!v.newPortalName}" aura:id="portalName"/>
+                                        <br/><br/>
+                                        <select class="slds-select" id="portalTempID" aura:id="portalTempID" value="{!v.selectedPortalTemplateId}"  size="1" style="width: 80%;">
+                                            <aura:iteration items="{!v.portalTemplateOptions}" var="po">
+                                                <option value="{!po.Value}">{!po.Label}</option>
+                                            </aura:iteration>
+                                        </select>
+                                        <br/><br/>
+                                        <select class="slds-select" id="portalMgrID" aura:id="portalMgrID" value="{!v.selectedPortalManagerRoleId}"  size="1" style="width: 80%;">
+                                            <aura:iteration items="{!v.portalManagerRoleOptions}" var="po">
+                                                <option value="{!po.Value}">{!po.Label}</option>
+                                            </aura:iteration>
+                                        </select>
+                                        <br/><br/>
+                                        <select class="slds-select" id="portalIndID" aura:id="portalIndID" value="{!v.selectedIndustryId}"  size="1" style="width: 80%;">
+                                            <aura:iteration items="{!v.industryOptions}" var="po">
+                                                <option value="{!po.Value}">{!po.Label}</option>
+                                            </aura:iteration>
+                                        </select>
+                                        <br/><br/><br/>
+                                        <ui:button label="Add" press="{!c.linkToNewPortal}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <tr  style="height:40px:"><td colspan="2"/>&nbsp;</tr>
+                     <tr><td colspan="2" style="text-align:center;"><ui:button label="Close" press="{!c.closePopup}"/></td></tr>
+                    </table>
+            </div>
+            <div aura:id="CreateDealReport" style="width:100%;background-color:white;display:none;">
+                <table width="100%" height="100%">
+                    <tr>
+                        <td align="left" width="100%" height="30" style="font-size:100%;" colspan="2">
+                            <b>New Deal Report</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="100%">
+                    
+                        <div style="overflow: auto; height: 400px; margin-left: 10px;">
+    
+                            <table height="100%" class="InputFormTable" style="width:90%;">
+                            <tr>
+                                <td align="left">
+                                    Company Name <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <input type="Text" html-class="required_field" style="width:100%;font-size:100%;" value="{!v.dealReport.CompanyName}" aura:id="CompanyName" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Win/Loss <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <input type="radio" name="WinOrLoss" value="true"/>Win<br/>
+                                    <input type="radio" name="WinOrLoss" value="false"/>Loss<br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Deal Type <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <input type="radio" name="DealType" value="true"/>Sales<br/>
+                                    <input type="radio" name="DealType" value="false"/>Service<br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Fiscal Year <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="FiscYear" aura:id="FiscYear" value="{!v.dealReport.FiscalYear}"  size="1">
+                                        <aura:iteration items="{!v.fiscalYearOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Deal Size <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="DealSize" aura:id="DealSize" value="{!v.dealReport.DealSize}"  size="1">
+                                        <aura:iteration items="{!v.dealSizeOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Sales Region <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="salesRegion" aura:id="salesRegion" value="{!v.dealReport.Region}"  size="1">
+                                        <aura:iteration items="{!v.regionOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Industry <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/> 
+                                    <select class="slds-select" id="industryOpt" aura:id="industryOpt" value="{!v.dealReport.Industry}"  size="1">
+                                        <aura:iteration items="{!v.industryOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Business Partner <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="BusPartner" aura:id="BusPartner" value="{!v.dealReport.BusinessPartner}"  size="1">
+                                        <aura:iteration items="{!v.businessPartnerOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Products <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="Product" aura:id="Product" value="{!v.dealReport.Product}"  size="1">
+                                        <aura:iteration items="{!v.productOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Payees/Subscribers <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <input type="Text" html-class="required_field" style="width:100%; font-size:100%;" value="{!v.dealReport.Payees}"  aura:id="Payees" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Competitor <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <select class="slds-select" id="Competitor" aura:id="Competitor" value="{!v.dealReport.Competitor}"  size="1">
+                                        <aura:iteration items="{!v.competitorOptions}" var="po">
+                                            <option value="{!po.Value}">{!po.Label}</option>
+                                        </aura:iteration>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Sales Process Background
+                                    <br/>
+                                    <Textarea html-class="required_field" style="width:100%;font-size:100%;" value="{!v.dealReport.SalesProcessBackground}" aura:id="SalesProcessBackground"  />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Problem/Implication <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <Textarea html-class="required_field" style="width:100%;font-size:100%;" value="{!v.dealReport.Problem}"  aura:id="Problem" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left">
+                                    Cause <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                    <br/>
+                                    <Textarea html-class="required_field" style="width:100%;font-size:100%;" value="{!v.dealReport.Cause}"  aura:id="Cause" />
+                                </td>
+                            </tr>
+    
+                            <aura:iteration items="{!v.DealReportDefinitions}"  var="definition">
+    
+                            <tr>
+                                <td align="left">
+                                    <aura:if isTrue="{!definition.DefinitionType == '1'}">
+                                        {!definition.Name} <span class="required" style="color: rgb(75, 87, 99);font-size: large;">*</span>
+                                        <br/>
+                                        <select class="slds-select" aura:id="DefTypeOne" value="{!definition.value}"  size="1">
+                                            <aura:iteration items="{!definition.options}" var="po">
+                                                <option value="{!po.Value}">{!po.Label}</option>
+                                            </aura:iteration>
+                                        </select>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!definition.DefinitionType == '2'}">
+                                        {!definition.Name} <span class="required">*</span>
+                                        <br/>
+                                        <Textarea html-class="required_field" style="width:100%;font-size:100%;" value="{!definition.value}" aura:id="DefTypeOne" />
+                                    </aura:if>
+                                    
+                                </td>
+                            </tr>
+                            
+                            </aura:iteration>
+                            
+                            </table>
+                            
+                        </div>
+                    
+                         </td>
+                    </tr>
+                    <tr>
+                        <td align="right" width="100%">
+                            <ui:button label="Create Deal Report" press="{!c.createReport}"/>
+                        </td>
+                    </tr>
+                    <tr style="height:20px:"><td colspan="2"/></tr>
+                    <tr><td colspan="2" style="text-align:center;"><ui:button label="Close" press="{!c.closePopup}"/></td></tr>
+                </table>
+            </div>
+            
+        </div>
+    </CALSE:S_Collapsible>
+    
+</aura:component>

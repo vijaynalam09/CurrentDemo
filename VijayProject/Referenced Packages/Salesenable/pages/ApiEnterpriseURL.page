@@ -1,0 +1,3 @@
+<apex:page >
+{!$Api.Enterprise_Server_URL_80}
+</apex:page>

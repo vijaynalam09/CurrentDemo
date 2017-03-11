@@ -1,0 +1,96 @@
+<apex:page controller="ccsfDashboardAp.CCDA_ReportController" action="{!setReportSaveMode}" sidebar="false" showheader="false">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!header}" settingsImage="{!screenConstants['linetrend.settingsImage']}"></c:CCDA_CommonHeader> 
+  <style>
+          input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+  </style>
+  <div class="aligned_cont2">
+  <apex:pageMessages id="mymsg" />
+  <apex:form id="frmAddReport">
+          <script type="text/javascript">
+            function getResultTypeValue(id){
+                displayFunction(document.getElementById(id).value);   
+            }
+            function changeColor(elmnt){
+                elmnt.style.color='#000000';
+            }
+          </script> 
+          
+        <apex:actionFunction action="{!resultTypeClick}" name="displayFunction"  rerender="rerendersection2">
+                <apex:param name="resultType" value="{!$Component.resultType}"/>
+        </apex:actionFunction>
+         
+        
+      <c:formblock alignment="vertical">
+        <c:formgroup >
+           <h3> <apex:outputText value="{!screenConstants['linetrend.sectionHeader']}" /></h3>
+        </c:formgroup>
+ 
+         <c:formgroup >
+         {!screenConstants['linetrend.Name']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['linetrend.Name']}" title="{!screenConstants['linetrend.Name']}" value="{!report[objectFieldMap[visualComponents['Line Trend']]['Name']]}"></apex:inputText>
+        </c:formgroup>
+      
+        <c:formgroup >
+        {!screenConstants['linetrend.DisplayName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['linetrend.DisplayName']}" title="{!screenConstants['linetrend.DisplayName']}" value="{!report[objectFieldMap[visualComponents['Line Trend']]['DisplayName']]}"></apex:inputText>
+        </c:formgroup> 
+       
+
+        <c:formgroup >
+        {!screenConstants['linetrend.SortOrder']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['linetrend.SortOrder']}" title="{!screenConstants['linetrend.SortOrder']}" value="{!report[objectFieldMap[visualComponents['Line Trend']]['SortOrder']]}"></apex:inputText>
+        </c:formgroup> 
+        
+               
+        <c:formgroup > 
+        {!screenConstants['linetrend.ResultType']}  
+         <label class="select-box">
+          <apex:selectList onchange="getResultTypeValue('{!$Component.resultType}');ochangeColor(this);"  id="resultType" size="1" value="{!report[objectFieldMap[visualComponents['Line Trend']]['ResultType']]}" styleClass="form-control" html-placeholder="{!screenConstants['linetrend.ResultType']}" title="{!screenConstants['linetrend.ResultType']}">  
+            <apex:selectOptions value="{!resultTypes}"/>
+          </apex:selectList>
+         </label>
+        </c:formgroup>
+
+     
+        <c:formgroup >
+
+ 
+       <h3> <apex:outputText value="{!screenConstants['linetrend.ResultList']}" /></h3>       
+           
+            <apex:dataList id="rerendersection2" value="{!reportLists}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.repObject[objectFieldMap[rep.customObjName]['depDisplayName']]}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+       
+       
+              <c:formgroup >
+
+ 
+       <h3> <apex:outputText value="{!screenConstants['visualizationPeriod']}" /></h3>       
+          <!-- <b> <apex:outputText value="{!screenConstants['report.multiple']}" /></b>-->
+            <b>Default :</b> 
+            <label class="select-box">
+            <apex:selectList value="{!visualizationTimeFrame[0].defaultTimeFrame}" size="1" onchange="changeColor(this);">
+              <apex:selectOptions value="{!visualizationTimeFrame[0].visualizationTimeFrameOptions}"/>                  
+            </apex:selectList>
+            </label><br/>
+            <apex:dataList value="{!visualizationTimeFrame}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.customObjName}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+         
+      </c:formblock> 
+      <apex:commandButton value="Save" action="{!saveReportConfig}" style="color:white !important;" styleClass="btn-default btn-lg" rendered="{!showSaveButton}" />
+  </apex:form> 
+  </div>
+</apex:page>

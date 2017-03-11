@@ -1,0 +1,129 @@
+<apex:page controller="ccsfDashboardAp.CCDA_CommonController" action="{!fetchAllDashboards}" showheader="true" sidebar="false">
+<style type="text/css">
+.logo{
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    height: 100px;
+    width: 80%;
+    padding: 0;
+    border: none;
+    background-image : url("{!URLFOR($Resource.CCDA_StaticRes, 'Icons/calliduscloud.png')}");
+    -webkit-background-size: 50px 25px;
+    background-size: contain;
+    background-color: transparent;
+    text-indent: -9999px;
+    background-repeat:no-repeat;
+ 
+}
+.parent_div{
+    width:85%;
+    height:120px;
+}
+
+@media (max-width: 480px) {
+.parent_div{
+    width:85%;
+    height:80px;
+}
+}
+  .btn-default.selected {
+     
+background-color: #086b99 !important;
+-webkit-box-shadow: inset -4px 9px 0px -7px rgba(57,116,176,0.5);
+      }
+      
+      .fontStyle{
+            color: #333333;
+            padding: 0.8em 0;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 5px;
+            background-color: #f8f2d9;
+            border: 1px solid #eee0a9;
+            border-radius: 3px;
+            display: block;
+      }
+      
+       .selBox{
+border:1px solid #cecfd1;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+border-bottom: none;
+}
+.selBox ul li{
+list-style:none;
+margin:0px;
+}
+.selBox ul li a{
+ text-decoration: none;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    color: ##97999a;
+    font-weight: 300;
+    display: block;
+    border-bottom: 1px solid #cecfd1;
+}
+
+
+  
+  .selBox ul li a {
+    padding: 2.5%;
+    display: block;
+    color: #222;
+}
+
+.selBox ul li a:hover{
+   background-color:#E8EAEB; 
+}
+
+.selBox ul li a:active{
+   background-color:#e5e5e5; 
+}
+
+</style>
+ <script type="text/javascript">
+          var str = "";
+         jQuery(document).ready(function(){
+            $( ".btn-default" ).click(function() { $(this).toggleClass( "selected" ); });  });
+            
+</script>
+<div class = "parent_div">
+<div class="logo"/>
+</div>
+<c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['dashboard.pageHeader']}" settingsImage="{!screenConstants
+
+['dashSelect.settingsImage']}"></c:CCDA_CommonHeader>
+<div class="aligned_cont2">
+<apex:outputPanel id="mymsgPanel">    <apex:pageMessages id="mymsg" /></apex:outputPanel>
+<apex:outputPanel >
+     <apex:form > 
+
+   
+     <c:formblock alignment="vertical"> 
+         <c:formgroup >
+           <h3> <apex:outputText value="{!screenConstants['dashboard.selectType']}" rendered="{!showDashboards}" /></h3>
+           <apex:outputText rendered="{!showDashboards}">
+        <div class="selBox" >
+            <apex:repeat value="{!dashboardOptions}" var="dashboard">
+            <ul>
+              <li>
+                <apex:commandLink action="{!redirectToSelectedDashboard}" id="theCommandLink" value="{!dashboard['name']}">
+                     <apex:param name="dashboardSelected" value="{!dashboard['id']}" assignTo="{!dashboardSelected}"  />
+                </apex:commandLink>
+             </li>
+            </ul>
+            </apex:repeat>
+      </div>
+      </apex:outputText>
+        <apex:outputText value=" Dashboards are not available for this user"  rendered="{!!showDashboards}"/>  
+         </c:formgroup>
+     </c:formblock>
+
+     </apex:form>
+</apex:outputPanel>
+
+</div>
+ 
+</apex:page>

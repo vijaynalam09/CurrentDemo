@@ -1,0 +1,194 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DashboardController" action="{!getReportDetails}" sidebar="false" showheader="false" docType="html-5.0" standardStylesheets="false">
+<!--  action="{!getReportDetails}"-->
+<head> 
+    <style type="text/css">
+    
+            body div#outerdiv {
+                overflow: auto !important;
+
+            }
+            
+             #innerscrolldiv {
+                overflow: auto;
+                overflow-x: hidden;
+            }
+            .flexslider00.col-md-4,
+            .flexslider01.col-md-4,
+            .flexslider02.col-md-4,
+            .flexslider03.col-md-4 {
+                padding:0;
+            }
+            .slide-container ul {
+                list-style:none;
+                margin:0;
+                padding:0;
+            }
+            .slide-container li {
+                
+                margin:0;
+                padding:0;
+            }
+            .slide-container .visualstrap .well {
+                min-height:526px;
+            }
+            .slide-container .visualstrap .col-md-4 {
+                width:100%;
+                box-sizing:border-box;
+            }
+            .flex-control-nav {
+                text-align:center;
+            }
+            .flex-control-nav li {
+                display:inline-block;
+                margin:0 0.2em;
+            }
+            .flex-control-nav a {
+                display:block;
+                text-indent:-9999px;
+                width:12px;
+                height:12px;
+                background:#bbb;
+                border-radius:50%;
+            }
+            .flex-direction-nav {
+                display:none;
+            }
+            .flex-control-nav a.flex-active {
+                background:#2a94d6;
+            }
+            #loading {
+                position:fixed;
+                left:0;
+                top:0;
+                right:0;
+                bottom:0;
+                background:#fff;
+                z-index:999;           
+            }
+            #loading img {
+                position:absolute;
+                left:50%;
+                top:50%;
+            }
+            .Range-selector {
+                text-align:center;
+            }
+            .Range-selector div {
+                display:inline-block;
+                vertical-align:middle;
+            }
+            .Range-selector span {
+                font-size:15px;
+                font-size: 15px;
+                display: inline-block;
+                margin: 1em;
+            }
+           .visualstrap .container {
+               width:100%;
+          }
+          table.main_table{
+                font-size:11px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                width:100%;
+           }
+            table.main_table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #eee;
+            }
+            table.main_table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+            }
+
+    </style>
+</head>
+<apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/styles.css')}" />      
+<apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/new.css')}" /> 
+<!--  <apex:includeScript value="{!$Resource.jquerymin}" /> -->
+<apex:includeScript value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'js/jquerymin.js')}" />
+<body>
+<header class="bg-anchor tc ptm ng-scope" title="" description="" icon="contact">
+<!--<section class="sg-phone--header ht-44 clear ng-scope">
+<header role="group" class="bg-global-header brtop ht-44 dropglow-1" on-notifications="notificationsHandler(event)" on-stage-left="stageLeftHandler(event)" icon="back" notifications="4">
+  <ul class="fl man pan list-horizontal ht-44">
+    <li class="pos-rel fl ht-44">
+      <a class="phm ht-44 pam" title="Navigation" href="javascript:void(0)">
+        <span class="active--icon-1 text-color-5 icon-utility-back"></span>
+        <span class="tha">Navigation</span>
+      </a>
+    </li>
+  </ul>
+  <ul class="fr man pan list-horizontal ht-44">
+    <li class="pos-rel fl ht-44">
+      <a class="phm ht-44 pam" title="Notifications" href="javascript:void(0)">
+        <span data-notification-count="" class="icon-utility-notification active--icon-1 text-color-5 notifications">
+        </span>
+        <span class="tha"> Notifications</span>
+      </a>
+    </li>
+  </ul>
+</header>
+</section>-->
+
+<!--  <left>
+  <apex:form >
+    <apex:commandButton value="<" action="{!redirectToDashboardView}" styleClass=""/>
+  </apex:form></left> -->
+  <apex:form >
+  <div id="divBackButton">
+    <apex:commandButton id="backBtn" value="<" action="{!redirectToDashboardViewTest}"  styleClass="backButton"/>  
+    <!--   <apex:commandButton id="backBtn" value="<" action="{!redirectToDashboardViewTest}"onclick="javascript:back();return false;"  styleClass="backButton"/>  
+    -->
+   </div>
+    <!-- action="{!redirectUrl}" 
+    onclick="javascript&colon;back();"  
+    
+     --> 
+  </apex:form>
+
+  
+   <apex:outputPanel rendered="{!resultType == 'Credit'}">
+    <div class="icon icon--d sq-60 icon--credit"></div>
+  </apex:outputPanel>
+  <apex:outputPanel rendered="{!resultType == 'Incentive'}">
+    <div class="icon icon--d sq-60 icon--incentive"></div>
+  </apex:outputPanel>
+  <apex:outputPanel rendered="{!resultType == 'Deposit'}">
+    <div class="icon icon--d sq-60 icon--saving"></div>
+  </apex:outputPanel>
+  <apex:outputPanel rendered="{!resultType == 'Measure'}">
+    <div class="icon icon--d sq-60 icon--measure"></div>
+  </apex:outputPanel>
+
+  <h1 class="f1 wht text-shadow man ng-binding">
+    {!resultDisplayName}
+  </h1>
+   <h2 class="f3 text-color-3 text-shadow man pbm ng-binding">
+    {!resultType}  .  {!periodName}
+  </h2> 
+</header>
+<apex:repeat value="{!responseDetailList}" var="response">
+<ul class="fw-normal bg-2 man pan border-bottom border--3">
+  <li class="flag flag--top active--list-1 pam border-bottom border--3">
+    <div class="flag--body">
+      <span class="db text-color-1 f4 ng-binding">{!response.fieldName}</span>
+      <span class="db text-color-2 f6 ng-binding">{!response.fieldValue}</span>
+      <span class="db text-color-2 f6 ng-binding"></span>
+    </div>
+  </li>
+</ul>
+</apex:repeat>
+
+
+</body> 
+
+</apex:page>

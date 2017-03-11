@@ -1,0 +1,445 @@
+<apex:page standardController="Opportunity" docType="html-5.0" extensions="ccsfDashboardAp.CCDA_EstimatorExtension" showHeader="false" sidebar="false">
+    <apex:outputPanel id="containerPanel">
+        <title> What-If Estimator</title>
+        <apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/styles.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/new.css')}" />
+        <style>
+            input[value],
+            textarea[placeholder],
+            select[placeholder] {
+                color: #000 !important;
+            }
+        </style>
+        <style type="text/css">
+                body div#outerdiv {
+                overflow: auto !important;
+            }
+            
+            .cc_preloader {
+                clear: both;
+                display: block;
+            }
+            
+            .setl_box span.statusStyle,
+            .cc_preloader span.statusStyle {
+                background: url("{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/loading.gif')}");
+                background-size: cover;
+                width: 74px;
+                height: 25px;
+                display: inline-block;
+                background-repeat: no-repeat;
+                background-size: 22px 22px;
+                padding: 3px 0 0px 25px;
+                margin: 0;
+                line-height: 19px;
+                font-family: 'Segoe UI', Helvetica, 'Droid Sans', Tahoma, Geneva, sans-serif;
+                font-weight: 400;
+                font-size: 12px;
+                color: #565656;
+            }
+            
+            #innerscrolldiv {
+                overflow: auto;
+                overflow-x: hidden;
+            }
+            
+            .flexslider00.col-md-4,
+            .flexslider01.col-md-4,
+            .flexslider02.col-md-4,
+            .flexslider03.col-md-4 {
+                padding: 0;
+            }
+            
+            .slide-container ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .slide-container li {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .slide-container .visualstrap .well {
+                min-height: 526px;
+            }
+            
+            .slide-container .visualstrap .col-md-4 {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .flex-control-nav {
+                text-align: center;
+            }
+            
+            .flex-control-nav li {
+                display: inline-block;
+                margin: 0 0.2em;
+            }
+            
+            .flex-control-nav a {
+                display: block;
+                text-indent: -9999px;
+                width: 12px;
+                height: 12px;
+                background: #bbb;
+                border-radius: 50%;
+            }
+            
+            .flex-direction-nav {
+                display: none;
+            }
+            
+            .flex-control-nav a.flex-active {
+                //background:#2a94d6;
+            }
+            
+            .Range-selector {
+                text-align: center;
+            }
+            
+            .Range-selector div {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            
+            .Range-selector span {
+                font-size: 15px;
+                font-size: 15px;
+                display: inline-block;
+                margin: 1em;
+            }
+            
+            .visualstrap .container {
+                width: 100%;
+            }
+            
+            table.main_table {
+                font-size: 11px;
+                color: #333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            .amountClass {
+                text-align: center;
+                font-size: 1.3em;
+                font-weight: 600;
+            }
+            
+            table.main_table th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #eee;
+            }
+            
+            table.main_table td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+            }
+            
+            table.response_style {
+                border: 1px solid #edeff0;
+                list-style: none outside none;
+                width: 100%;
+                border-collapse: collapse;
+                color: #3c3d3e;
+            }
+            
+            table.response_style thead {
+                background-color: #f0f1f2;
+            }
+            
+            table.response_style thead tr th {
+                color: #3c3d3e;
+                text-align: center;
+                padding: 0.8em;
+                border-bottom: 1px solid #edeff0;
+                word-break: break-word;
+            }
+            
+            table.response_style tr td {
+                //border-bottom: 1px solid #edeff0;
+                border-bottom: 1px solid #ededed;
+                padding: 0.8em 0.5em 0.8em 1em;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 300;
+                font-size: 14px;
+                color: #3c3d3e;
+                text-align: center;
+            }
+            
+            table.response_style tbody tr:nth-child(odd) {
+                background: #fafafa
+            }
+            
+            table.response_style tbody tr td .form-group {
+                margin-bottom: 0px !important;
+            }
+            
+            table.response_style tr td input {
+                margin-right: 5px;
+            }
+            .largeNumberDisplay {
+                font-size: 2em !important;
+            }
+            .est-title {
+                font-size: 1em !important;
+            }
+            
+            @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+                table.response_style {
+                    border: 1px solid #dadada;
+                }
+                table.response_style thead tr th {
+                    font-size: 0.9em;
+                }
+                table.response_style thead {
+                    background-color: #e2e4e5;
+                }
+            }
+            
+            section.oneCol .forcePageBlockSectionRow p.forcePageBlockItemView {
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+            
+            table.response_style thead tr th {
+                color: #fff;
+                text-align: center;
+                padding: 0.8em;
+                border-bottom: 1px solid #edeff0 !important;
+                word-break: break-word;
+                background: #1589ee !important;
+            }
+            
+            .largeNumberDisplay {
+                font-size: 2.5em !important;
+            }
+            
+            .left-align{
+                padding-left: 5% !important;
+                text-align: left !important;
+            }
+            
+            .right-align{
+                padding-right: 5% !important;
+                text-align: right !important;
+            }
+            
+            .ptm {
+                padding-top: 14px;
+                height: auto;
+                overflow: hidden;
+            }
+            
+            .green{
+                color: green;
+            }
+            
+            .red{
+                color: red;
+            }
+            
+            footer{
+                text-align: center;
+                margin: 15px 0px;
+                position: absolute;
+                bottom: 5px;
+                left: 40%;
+            }
+            
+            .heading{
+                font-weight: bold;
+                text-align: center;
+                font-size: 17px;
+            }
+            
+            .logo{
+                height: 40px;
+                width: 250px;
+            }
+            
+            .lastrunspan{
+                font-size: 16px;
+                font-weight: bold;
+                color: #B32727;
+            }
+        </style>
+        <script type="text/javascript">
+            function changeColor(elmnt) {
+                elmnt.style.color = '#000000';
+            }
+
+            function hide() {
+                //  document.getElementById("output").style.display = "none";
+                document.getElementById("buttonEstimate").style.display = "none";
+                // estimate();
+            }
+
+            function complete() {
+                $('.output').css('buttonEstimate', 'block');
+            }
+        </script>
+
+        <!--
+        <header class="bg-anchor tc ptm ng-scope" title="" description="" icon="opportunity">
+            <div class="icon icon--d sq-60 icon--measure"></div>
+            <h1 class="f1 wht text-shadow man ng-binding">
+                Estimated Commissions
+            </h1>
+            <h2 class="f3 text-color-3 text-shadow man pbm ng-binding">
+                Opportunity:  {!Opportunity.Name}
+            </h2>
+        </header>
+        
+        <header class="bg-anchor tc ptm ng-scope" title="" description="" icon="opportunity">
+            <h1 class="f1 wht text-shadow man ng-binding">
+                Opportunity Estimator - See your commissions Real-time
+            </h1>
+        </header>-->
+        
+        <apex:form >
+
+            <apex:actionFunction name="ftn" oncomplete="complete();" />
+
+            <c:visualstrapblock rendered="{!IF(opportunity.Amount != opportunity.ccsfDashboardAp__Commission_Requested_Amount__c, true, false)}">
+                <div class="deskcont listnw">
+                    <div class="aligned_cont">
+                        <apex:pageMessages id="errorMsg" /> <!--About this estimator&nbsp;:-->
+                        <br/> <!--This calculator estimates your bonus based on your plans Key Performance Indicators. Please enter the value you think you will achieve and click on 'Estimate'.-->
+                        <p class="heading">See your commissions Real-time</p>
+                        <!--<c:formgroup >
+                            Amount
+                            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="Amount" title="Opportunity Amount" value="{!amountInp}"></apex:inputText>
+                        </c:formgroup>-->
+                        <c:formgroup rendered="{!moreThanOnePosition}">
+                            <label style="display:{!IF(positionOptions.size > 1, '', 'none')};"><i>You hold multiple positions in your organization.Please select the position for which you wish to run the estimator.</i><br/><br/></label>
+                            Position
+                            <label class="select-box">
+                                <apex:selectList value="{!positionName}" size="1" styleClass="form-control">
+                                    <apex:selectOptions value="{!positionOptions}" />
+                                </apex:selectList>
+                            </label>
+                        </c:formgroup>
+
+                        <div id="buttonEstimate">
+                            <c:formgroup >
+                                <apex:commandButton value="Estimate" action="{!estimate}" style="color:white !important;" styleClass="btn-default btn-lg" status="loadingStatus" onclick="hide()" reRender="containerPanel" rendered="{!IF((opportunity.Amount != opportunity.ccsfDashboardAp__Commission_Requested_Amount__c && opportunity.OwnerId == $User.Id), true, false)}"/>
+                            </c:formgroup>
+                        </div>
+                        <c:visualstrapblock >
+                            &nbsp;
+                            <div class="cc_preloader">
+                                <apex:actionStatus id="loadingStatus" startText="Loading.." stopText="" startStyleClass="statusStyle" />
+                            </div>
+
+                        </c:visualstrapblock>
+                    </div>
+                </div>
+            </c:visualstrapblock>
+
+            <div id="output" class="output">
+                <apex:outputText id="errorId" rendered="{!showErrorMsg}">
+                    <c:visualstrapblock >
+                        <div class="aligned_cont2">
+                            <div class="est-title">
+                                No Data Available
+                            </div>
+                        </div>
+                    </c:visualstrapblock>
+                </apex:outputText>
+                
+                <apex:outputText id="resId" rendered="{!NOT(ISBLANK(estimateResponse))}">
+
+                    <c:visualstrapblock >
+                        <div class="aligned_cont2">
+                            <div class="est-title">
+                                <div style="margin: 0 auto;">
+                                    <div id="amountId" class="amountClass">
+                                        <span>TOTAL ESTIMATED COMISSIONS</span>
+                                        <br/><br/>
+                                        <span>
+                                            <apex:outputLabel styleClass="largeNumberDisplay" value="$" />
+                                            <apex:outputText value="{0, number, ###,##0.00}" styleClass="largeNumberDisplay">
+                                                <apex:param value="{!totalValue}" />
+                                            </apex:outputText>
+                                        </span>
+                                        <img src="{!URLFOR($Resource.ccsfDashboardAp__CCDA_TEC_Icon)}" style="width: 40px;"/>
+                                        <br/>
+                                        <br/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <apex:dataTable value="{!estimateResponse.outputIncentives}" rendered="{!NOT(ISBLANK(estimateResponse))}" border="1" cellspacing="2" cellpadding="2" columns="4" var="response" styleClass="response_style">
+                                <apex:column styleClass="left-align">
+                                    <apex:facet name="header">
+                                        <apex:outputLabel value="Bonus Component" />
+                                    </apex:facet>
+                                    <c:formgroup >
+                                        <apex:outputText value="{!response.name}"/>
+                                    </c:formgroup>
+                                </apex:column>
+                                <apex:column styleClass="right-align">
+                                    <apex:facet name="header">
+                                        <apex:outputLabel value="Current Value" /></apex:facet>
+                                    <c:formgroup >
+                                        <apex:outputLabel value="$" />
+                                        <apex:outputText value="{0, number, ###,##0.00}">
+                                            <apex:param value="{!response.CurrentValue.amount}" />
+                                        </apex:outputText>
+                                    </c:formgroup>
+                                </apex:column>
+                                <apex:column styleClass="right-align">
+                                    <apex:facet name="header">
+                                        <apex:outputLabel value="Forecasted Value" /></apex:facet>
+                                    <c:formgroup >
+                                        <apex:outputLabel value="$"/>
+                                        <apex:outputText value="{0, number, ###,##0.00}">
+                                            <apex:param value="{!response.value.amount}" />
+                                        </apex:outputText>
+                                    </c:formgroup>
+                                </apex:column>
+                                <apex:column styleClass="right-align">
+                                    <apex:facet name="header">
+                                        <apex:outputLabel value="Difference" /></apex:facet>
+                                    <c:formgroup >
+                                        <apex:outputLabel value="$" styleClass="{!IF((response.value.amount - response.CurrentValue.amount) > 0, 'green', IF((response.value.amount - response.CurrentValue.amount) < 0, 'red', ''))}"/>
+                                        <apex:outputText value="{0, number, ###,##0.00}" styleClass="{!IF((response.value.amount - response.CurrentValue.amount) > 0, 'green', IF((response.value.amount - response.CurrentValue.amount) < 0, 'red', ''))}">
+                                            <apex:param value="{!(response.value.amount - response.CurrentValue.amount)}" />
+                                        </apex:outputText>
+                                    </c:formgroup>
+                                </apex:column>
+                            </apex:dataTable>
+                            <span class="lastrunspan"><i>Estimator last run on &nbsp; <apex:outputField value="{!opportunity.ccsfDashboardAp__Commission_Last_Run__c}"/></i></span>
+                        </div>
+                    </c:visualstrapblock>
+                </apex:outputText>
+            </div>
+            
+            <c:visualstrapblock rendered="{!IF(opportunity.OwnerId != $User.Id, true, false)}">
+                <div class="aligned_cont2">
+                    <div class="est-title" style="text-align: center; font-size: 20px !important;">
+                        Estimator unavailable as you do not own this opportunity
+                    </div>
+                </div>
+            </c:visualstrapblock>
+        </apex:form>
+        
+        <footer title="" description="" icon="opportunity">
+            <img src="{!URLFOR($Resource.CCDA_Logo)}" class="logo"/><br/>
+            <!--Copyright © 1998-2015 Callidus Cloud Inc, All Rights Reserved-->
+        </footer>
+        
+    </apex:outputPanel>
+</apex:page>

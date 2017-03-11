@@ -1,0 +1,2 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DashboardController" action="{!redirectToDetailPage}">
+</apex:page>

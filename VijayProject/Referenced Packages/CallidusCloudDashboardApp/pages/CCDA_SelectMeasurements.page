@@ -1,0 +1,74 @@
+<apex:page title="CCDA Select Measurements" controller="ccsfDashboardAp.CCDA_WhatIfSettingsController" sidebar="false" showheader="false" action="{!getWhatIfConfigs}" standardStylesheets="true">
+    <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['whatif.pageHeader']}" settingsImage="{!screenConstants['customSettings.settingsImage']}"></c:CCDA_CommonHeader>
+    <script type="text/javascript">
+        /* function changeColor(elmnt){
+            elmnt.style.color='#000000';
+        }*/
+
+        function getSelectedMeasurementRule(position) {
+            getSelectedMeasurement(position.trim());
+        }
+    </script>
+
+    <style>
+        /*input:not([type=submit]), textarea[placeholder], select[placeholder]{
+            color: #000 !important;
+        }*/
+    </style>
+
+    <c:visualstrapblock >
+        <div class="deskcont listnw">
+            <apex:pageMessages />
+            <apex:form >
+                <apex:actionFunction name="getSelectedMeasurement" action="{!getSelectedMeasurement}" reRender="measureId">
+                    <apex:param name="selectedPosition" value="" assignTo="{!selectedTitle}" />
+                </apex:actionFunction>
+        
+                <div class="aligned_cont">
+                    <!--<c:formgroup>
+                        Select Position
+                        <br/>
+                        <br/>
+                        <label class="select-box">
+                            <apex:selectList value="{!selectedPosition}" size="1" onchange="getSelectedMeasurementRule(this.value)" styleClass="form-control">
+                                <apex:selectOptions value="{!positionOptions}" />
+                            </apex:selectList>
+                            <br/>
+                            <br/>
+                        </label>
+                    </c:formgroup>-->
+                    
+                    <c:formgroup >
+                        Select Title
+                        <br/>
+                        <br/>
+                        <label class="select-box">
+                            <apex:selectList value="{!selectedTitle}" size="1" onchange="getSelectedMeasurementRule(this.value)" styleClass="form-control">
+                                <apex:selectOptions value="{!titleOptions}" />
+                            </apex:selectList>
+                            <br/>
+                            <br/>
+                        </label>
+                    </c:formgroup>
+                    
+                    <apex:outputPanel id="measureId">
+                        <c:formgroup >
+                            Select Measurement Rule
+                            <br/>
+                            <br/>
+                            <label class="select-box">
+                                <apex:selectList disabled="{!!isMeasurementFound}" value="{!selectedMeasurementRule}" size="1" styleClass="form-control">                                
+                                    <apex:selectOptions value="{!measurementOptions}" />
+                                </apex:selectList>
+                                <br/>
+                                <br/>
+                            </label>
+                        </c:formgroup>
+                        
+                        <apex:commandButton value="Save" rendered="{!isMeasurementFound}" action="{!saveWhatIfConfigs}" style="color:white !important;" styleClass="btn-default btn-lg" />
+                    </apex:outputPanel>
+                </div>
+            </apex:form>
+        </div>
+    </c:visualstrapblock>
+</apex:page>

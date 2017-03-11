@@ -1,0 +1,250 @@
+.THIS .amountClass {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+.THIS .largeNumberDisplay {
+    font-size: 2em !important;
+}
+.THIS .slds-table tr>th:first-child {
+   padding-left: 2px!important;
+   text-align: left;
+}
+
+.THIS .slds-table tr>td:first-child {
+   padding-left: 2px!important;
+   text-align: left;
+}
+.THIS .ccsfDashboardApWhatIfEstimatorComponent .slds-cell-shrink {
+   text-align: right;
+   white-space: normal;
+}
+.THIS table.response_style {
+    border: 1px solid #edeff0;
+    list-style: none outside none;
+    width: 100%;
+    border-collapse: collapse;
+    color: #3c3d3e;
+}
+.THIS table.response_style thead tr th {
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #edeff0 !important;
+    word-break: break-word;
+    background: #1589ee !important;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.THIS table.response_style tr td {
+    border-bottom: 1px solid #ededed;
+    padding: 0.8em 0.5em 0.8em 1em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: #3c3d3e;
+}
+
+.THIS table.response_style tbody tr td .form-group {
+    margin-bottom: 0px !important;
+}
+
+.THIS .aligned_cont2 .form-group > fieldset, .THIS .aligned_cont2 .form-group {
+    border: none;
+    display: block;
+    clear: both;
+}
+
+.THIS .aligned_cont2 .form-group {
+    margin-top: 0px !important;
+}
+
+.THIS .right-align{
+    padding-right: 5% !important;
+    text-align: right !important;
+}
+
+.THIS .ptm {
+    padding-top: 14px;
+    height: auto;
+    overflow: hidden;
+}
+
+.THIS .form-group {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.THIS .green{
+    color: green;
+}
+
+.THIS .red{
+    color: red;
+}
+
+.THIS table.response_style tbody tr:nth-child(odd) {
+    background: #fafafa;
+}
+
+.THIS .full-button{
+    width: 100%;
+}
+
+.THIS .slds-spinner--large {
+    left: 48%;
+    position: fixed;
+    top: 40%;
+    z-index: 11;
+}
+
+.THIS a {
+    color: #0070d2;
+    text-decoration: none;
+    -webkit-transition: color 0.1s linear;
+    transition: color 0.1s linear;
+}
+
+.THIS body {
+    color: #7e7f80;
+}
+
+.THIS .heading{
+    font-weight: bold;
+    text-align: center;
+    font-size: 17px;
+}
+
+.THIS .footer{
+    text-align: center;
+    margin: 15px 0px;
+    bottom: 5px;
+}
+
+.THIS .uiButton--default{
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    background: transparent;
+    background-clip: padding-box;
+    border: none;
+    border-radius: 0.25rem;
+    color: #0070d2;
+    font-size: inherit;
+    line-height: 2.125rem;
+    text-decoration: none;
+    -webkit-appearance: none;
+    white-space: normal;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: color 0.05s linear,background-color 0.05s linear;
+    transition: color 0.05s linear,background-color 0.05s linear;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #0070d2;
+    border: 1px solid #0070d2;
+    color: #fff !important;
+    box-shadow: none;
+    margin:0;
+    text-shadow: none;
+    border:none;
+    font-weight: normal;
+}
+
+.THIS .uiButton--default span{
+    color: #fff;
+}
+
+.THIS .uiButton--default:hover{
+    background-color: #005fb2;
+}
+
+.THIS #result-block{
+    display: none;
+}
+
+.THIS .highcharts-subtitle{
+    font-size: 25px;
+    font-weight: bold;
+    color: #4B8A08 !important;
+    fill:#4B8A08 !important;
+}
+
+.THIS .aligned_cont2{
+    width: 100% !important;
+    border: none;
+}
+
+.THIS .deskcont{
+    width: 100% !important;
+    border: none;
+}
+
+.THIS .highcharts-button{
+    display: none !important;
+}
+
+.THIS .slds-cell-shrink{
+    text-align: center;
+    white-space: normal;
+}
+.THIS .alighcls tr td
+{
+ text-align:right;
+}
+
+.THIS .slds-truncate{
+    white-space: normal;
+}
+.THIS .slds-text-heading--label{
+    text-transform: left!important;
+}
+
+.THIS .lastrunspan{
+    font-size: 16px;
+    font-weight: bold;
+    color: #B32727;
+}
+
+.THIS .lastrunspan{
+    font-size: 12px;
+    font-weight: bold;
+    color: #777;
+}
+
+.THIS .price{
+}
+
+.THIS .rght{
+    text-align: right !important;
+}
+
+.THIS th .slds-truncate{
+    font-size: 12px;
+	font-family: Arial;
+}
+
+.THIS .head-title{
+    background-color: inherit;
+    color: rgb(22, 50, 92);
+    font-weight: 300;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-align: center;
+    text-transform: none;
+    padding: 3rem 1rem 1rem;
+}
+
+.THIS .ccsfDashboardApWhatIfEstimatorComponent .slds-table tr>td:first-child {
+
+    text-align: left;
+}
+
+.THIS .highcharts-title, .THIS .highcharts-subtitle{
+    font-family: 'SalesforceSans-Regular',Arial,sans-serif !important;
+}

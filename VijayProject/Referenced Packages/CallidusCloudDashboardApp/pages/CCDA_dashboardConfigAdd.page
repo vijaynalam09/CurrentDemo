@@ -1,0 +1,51 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DashboardConfigController" action="{!setDashboardConfigSaveMode}" sidebar="false" showheader="false" >
+<script type="text/javascript">
+             function changeColor(elmnt){
+                elmnt.style.color='#000000';
+            }
+          </script> 
+<div class="">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!header}" settingsImage="{!screenConstants['dashconfig.settingsImage']}"></c:CCDA_CommonHeader>
+  <style>
+         input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+  </style>
+  <div class="aligned_cont2">
+  <apex:pageMessages id="mymsg" />
+  <apex:form id="frmAddDashboard">
+      <c:formblock alignment="vertical">
+        <c:formgroup >
+        {!screenConstants['dashconfig.displayName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['dashconfig.displayName']}" title="{!screenConstants['dashconfig.displayName']}" value="{!dashboard[objectFieldMap[customObjectMap['dashboardConfig']]['dashboardName']]}"></apex:inputText>
+        </c:formgroup>
+        <c:formgroup >
+           <!--  <c:panel title="{!screenConstants['dashconfig.dispComponents']}" type="default">  
+                <apex:dataTable value="{!dashboardReports}" var="rep" styleClass="table table-striped"> 
+                <apex:facet name="header">{!screenConstants['dashconfig.dispComponents']}</apex:facet>
+                    <apex:column ><apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox></apex:column>
+                    <apex:column value="{!rep.repObject[objectFieldMap[rep.customObjName]['DisplayName']]}" >
+                        <apex:facet name="header">{!screenConstants['dashconfig.reportName']}</apex:facet>
+                    </apex:column>
+                    <apex:column value="{!rep.repType}" >
+                        <apex:facet name="header">{!screenConstants['dashconfig.reportType']}</apex:facet>
+                    </apex:column>
+                    
+                </apex:dataTable>
+             </c:panel> -->
+             <apex:dataList value="{!dashboardReports}" var="rep" styleClass="list_style"> 
+                
+                    <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                    <apex:outputText value="{!rep.repObject[objectFieldMap[rep.customObjName]['DisplayName']]}"/>
+             </apex:dataList>
+        </c:formgroup>
+      </c:formblock> 
+      <div class="tesst">
+      <apex:commandButton value="Save" action="{!saveDashboardConfig}" style="color:white !important;" styleClass="btn-default btn-lg" rendered="{!showSaveButton}"/>
+      <!-- rendered="{!$ObjectType.Contact.fields.Email.Createable}"
+       -->
+      </div>
+  </apex:form> 
+  </div>
+  </div>
+</apex:page>

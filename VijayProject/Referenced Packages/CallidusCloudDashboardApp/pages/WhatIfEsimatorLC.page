@@ -1,0 +1,39 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" standardController="Opportunity" title="What If Lightning Component">
+    <style>
+        .head-title{
+            display: none;
+        }
+        .ccsfDashboardApWhatIfEstimatorComponent .slds-table tr > td:first-child {
+            padding: 0;
+            text-align: left;
+        }
+        .slds-max-medium-table--stacked-horizontal td::before{
+            padding-bottom: 0;
+            margin-top: 0;
+        }
+    </style>
+    
+    <!-- Lightning Resources-->
+    <apex:includeScript value="/lightning/lightning.out.js" /> 
+    <apex:includeScript value="{!URLFOR($Resource.ccsfDashboardAp__jQuery)}" />
+    <!-- Lightning Component -->
+        <div id="lightningComponent" style="height:400px;">
+        </div>
+    
+    
+
+    <script>
+
+        window.onload = function(){
+            $('input[type=text]').blur();
+        };
+        function init(){
+            $Lightning.use("ccsfDashboardAp:WhatIfEstimator", function() {
+                $Lightning.createComponent("ccsfDashboardAp:CallidusCloudCompEstimator", {recordId:"{!$CurrentPage.parameters.Id}"} , "lightningComponent", function(cmp) {
+                        // any further setup goes here
+                });
+            });
+        }
+        init();
+    </script>
+</apex:page>

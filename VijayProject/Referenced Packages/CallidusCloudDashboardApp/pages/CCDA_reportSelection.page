@@ -1,0 +1,40 @@
+<apex:page controller="ccsfDashboardAp.CCDA_ReportController" showheader="false" sidebar="false">
+<c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['report.selecttypepageHeader']}" settingsImage="{!screenConstants['report.settingsImage']}"></c:CCDA_CommonHeader>
+<div class="aligned_cont2">
+     <apex:form >
+     <apex:pageMessages id="mymsg" />
+     <c:formblock alignment="vertical">
+     <c:formgroup >
+       <h3> <apex:outputText value="{!screenConstants['report.selectType']}" /></h3>
+       
+         <apex:selectRadio value="{!visualisationTypeSelected}" layout="pageDirection" styleClass="list_style">
+            <apex:selectOptions value="{!reportTypes}"/>
+        </apex:selectRadio> 
+        
+      <!--  <apex:selectRadio value="{!visualisationTypeSelected}" layout="pageDirection" styleClass="list_style">
+            
+                <apex:selectOption itemValue="One"  >one</apex:selectOption>
+           
+        </apex:selectRadio> -->
+        
+     </c:formgroup>
+     </c:formblock>
+        <apex:commandButton value="Next" action="{!redirectToAddReport}" rerender="mymsg" status="status" styleClass="btn-default btn-lg"/>
+     </apex:form>
+     </div>
+     
+     <!--
+     <apex:outputPanel id="out">
+          <apex:actionstatus id="status" startText="testing..."> 
+             <apex:facet name="stop"> 
+               <apex:outputPanel> 
+                  <p>You have selected:</p> 
+                 <apex:outputText value="{!visualisationTypeSelected}"/> 
+              </apex:outputPanel> 
+            </apex:facet> 
+          </apex:actionstatus> 
+     </apex:outputPanel> 
+    -->
+  
+
+</apex:page>

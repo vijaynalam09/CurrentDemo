@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Endpoint_Url</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Endpoint Url</shortDescription>
+        <value>callidusondemand.com:443/TrueComp-SaaS/services/org/</value>
+    </labels>
+    <labels>
+        <fullName>What_If_End_Point</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>What If End Point</shortDescription>
+        <value>callidusondemand.com/CallidusPortal/services/</value>
+    </labels>
+</CustomLabels>

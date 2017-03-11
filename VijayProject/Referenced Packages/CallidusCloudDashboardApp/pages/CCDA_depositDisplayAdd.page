@@ -1,0 +1,85 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DepositDisplayController" action="{!setDepositSaveMode}" sidebar="false" showheader="false">
+<style>
+    .form-group select{
+        padding-left : 9px;
+    }
+        input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+</style>
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}"  screenTitle="{!header}" settingsImage="{!screenConstants['depositdisplay.settingsImage']}"></c:CCDA_CommonHeader>
+  
+  <div class="aligned_cont2">
+  <apex:pageMessages id="errorMsg" />
+  <apex:form id="frmAddDeposit">
+  
+          <script type="text/javascript">
+            function getResultValue(id){
+                displayFunction();   
+            }
+            function changeColor(elmnt){
+                elmnt.style.color='#000000';
+            }
+          
+             </script>
+        <apex:actionFunction action="{!populateResult}" name="displayFunction"  rerender="rerendersection2">
+        </apex:actionFunction>          
+            
+      <c:formblock alignment="vertical">
+         
+        <c:formgroup >
+        {!screenConstants['depositdisplay.displayName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['depositdisplay.displayName']}" title="{!screenConstants['depositdisplay.displayName']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depDisplayName']]}"></apex:inputText>
+        </c:formgroup>
+        {!screenConstants['depositdisplay.description']}
+        <c:formgroup >
+            <apex:inputTextarea styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['depositdisplay.description']}" title="{!screenConstants['depositdisplay.description']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depDescription']]}"></apex:inputTextarea>
+        </c:formgroup>
+        
+        
+        <c:formgroup >            
+         {!screenConstants['depositdisplay.resultType']}     
+        <apex:selectList size="1"  value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depResultType']]}" styleClass="form-control" html-placeholder="{!screenConstants['depositdisplay.resultType']}" 
+                                    title="{!screenConstants['depositdisplay.resultType']}"
+                                    onchange="getResultValue();changeColor(this);">                                     
+            <apex:selectOptions value="{!resultTypes}"/>
+        </apex:selectList>      
+       
+        </c:formgroup>
+        
+        <!-- Manju Added -->
+        {!screenConstants['depositdisplay.calender']}
+        <c:formgroup >
+           <apex:inputText styleClass="form-control" html-placeholder="{!screenConstants['depositdisplay.calender']}" title="{!screenConstants['depositdisplay.calender']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depCalender']]}"></apex:inputText>
+           <!--<apex:selectList size="1" styleClass="form-control" onchange="changeColor(this);" html-placeholder="{!screenConstants['depositdisplay.calender']}" title="{!screenConstants['depositdisplay.calender']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depCalender']]}">
+           <apex:selectOptions value="{!calendars}"/>
+           </apex:selectlist>-->
+           
+        </c:formgroup>        
+        <!-- Manju Added -->
+        
+        <apex:outputPanel id="rerendersection2">
+            <apex:outputtext rendered="{!resultTypeTemp != 'Payments'}" value="{!screenConstants['depositdisplay.resultName']}" /> 
+            <c:formgroup >
+                <apex:inputText rendered="{!resultTypeTemp != 'Payments'}" onkeypress="changeColor(this);" styleClass="form-control" html-placeholder="{!screenConstants['depositdisplay.resultName']}" title="{!screenConstants['depositdisplay.resultName']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depResult']]}"></apex:inputText>
+            </c:formgroup> 
+        </apex:outputPanel> 
+  
+        
+        {!screenConstants['depositdisplay.value']}       
+        <c:formgroup >    
+        <apex:selectList size="1"  value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depResultFieldValues']]}" onchange="changeColor(this);" styleClass="form-control" html-placeholder="{!screenConstants['depositdisplay.value']}" title="{!screenConstants['depositdisplay.value']}">  
+            <apex:selectOptions value="{!resultFieldValues}"/>
+        </apex:selectList>
+         </c:formgroup>
+        <!-- 
+        <c:formgroup >
+            <apex:inputText styleClass="form-control" html-placeholder="{!screenConstants['depositdisplay.unit']}" title="{!screenConstants['depositdisplay.unit']}" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depUnit']]}"></apex:inputText>
+        </c:formgroup>
+        
+         -->
+      </c:formblock> 
+      <apex:commandButton value="Save" action="{!saveDepositDisplay}" style="color:white !important;" styleClass="btn-default btn-lg"  rendered="{!showSaveButton}" />
+  </apex:form> 
+  </div>
+</apex:page>

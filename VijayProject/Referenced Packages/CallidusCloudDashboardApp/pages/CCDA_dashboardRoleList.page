@@ -1,0 +1,29 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DashboardConfigController" action="{!getDashboardConfigsWithReports}" sidebar="false" showheader="false" >
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['dashRole.pageHeader']}" settingsImage="{!screenConstants['dashRole.settingsImage']}"></c:CCDA_CommonHeader>
+  
+  <c:visualstrapblock >
+       <div class="deskcont listnw">
+      <apex:form >
+      
+       <div class="aligned_cont">
+       <div class="crve-cont">
+       <apex:dataTable value="{!dashboardConfigs}" var="dashboardConfig" styleClass="table table-hover"> 
+                 
+            <apex:column id="assignRoles">
+             <apex:commandLink action="{!redirectToRoles}" id="cmdLinkAssignRoles">
+                <apex:param name="id" value="{!dashboardConfig.dashboard[objectFieldMap[customObjectMap['dashboardConfig']]['id']]}" />
+                <apex:outputText value="{!dashboardConfig.dashboard[objectFieldMap[customObjectMap['dashboardConfig']]['dashboardName']]}" />
+                <p><apex:outputText value="{!dashboardConfig.reportNames}" /></p>
+            </apex:commandLink> 
+        
+            </apex:column>
+          
+            
+        </apex:dataTable>
+         </div>
+         </div>
+        </apex:form>
+       </div>
+  </c:visualstrapblock>
+  
+</apex:page>

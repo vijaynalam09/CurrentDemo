@@ -1,0 +1,116 @@
+<aura:component access="global" controller="ccsfDashboardAp.CCDA_LightningEstimatorController" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="currencySymbl" type="String" default="$"/>
+    <aura:attribute name="timeZoneSymbl" type="String" default=" "/>
+    <ltng:require styles="/resource/ccsfDashboardAp__CCDA_StaticRes/Styles/new.css,					                             
+                          /resource/ccsfDashboardAp__sldc" 
+                  scripts="/resource/ccsfDashboardAp__jQuery,
+                           /resource/ccsfDashboardAp__VisualStrap_Resources/js/bootstrap.min.js,
+                           /resource/ccsfDashboardAp__CCDA_StaticRes/js/jquerymin.js,
+                           /resource/ccsfDashboardAp__CCDA_StaticRes/js/globalizemin.js,
+                           /resource/ccsfDashboardAp__CCDA_StaticRes/js/dxchart.js,
+                           /resource/ccsfDashboardAp__CCDA_StaticRes/js/knockout.js,
+                           /resource/ccsfDashboardAp__CCDA_StaticRes/js/chartUtilJs.js,
+                           /resource/ccsfDashboardAp__CCDA_Highcharts/js/highcharts.js,
+                           /resource/ccsfDashboardAp__CCDA_Highcharts/js/modules/exporting.js"  
+                  afterScriptsLoaded="{!c.doInit}"/>
+<!--<ltng:require styles="{!join(',', $Resource.ccsfDashboardAp__StaticRes+'/Styles/new.css',$Resource.ccsfDashboardAp__SLDS0102+'/assets/styles/salesforce-lightning-design-system-vf.css',$Resource.ccsfDashboardAp__sldc)}" scripts="{!join(',',$Resource.ccsfDashboardAp__VisualStrap_Resources_New+'/js/bootstrap.min.js', $Resource.ccsfDashboardAp__jqry , $Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/jquerymin.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'js/globalizemin.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/dxchart.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/knockout.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/chartUtilJs.js',$Resource.ccsfDashboardAp__CCDA_Highcharts+'/js/highcharts.js',$Resource.ccsfDashboardAp__CCDA_Highcharts+'/js/modules/exporting.js')}" afterScriptsLoaded="{!c.doInit}"/>  
+    <ltng:require styles="{!join(',', $Resource.ccsfDashboardAp__CCDA_StaticRes+'/Styles/new.css',$Resource.ccsfDashboardAp__SLDS0102+'/assets/styles/salesforce-lightning-design-system-vf.css',$Resource.ccsfDashboardAp__sldc)}" scripts="{!join(',', $Resource.ccsfDashboardAp__VisualStrap_Resources+'/js/bootstrap.min.js', $Resource.ccsfDashboardAp__jQuery , $Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/jquerymin.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'js/globalizemin.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/dxchart.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/knockout.js',$Resource.ccsfDashboardAp__CCDA_StaticRes+'/js/chartUtilJs.js',$Resource.ccsfDashboardAp__CCDA_Highcharts+'/js/highcharts.js',$Resource.ccsfDashboardAp__CCDA_Highcharts+'/js/modules/exporting.js')}" afterScriptsLoaded="{!c.doInit}"/> -->
+    <!--<ltng:require styles="{!join(',', $Resource.ccsfDashboardAp_CCDA_StaticRes+'/Styles/new.css',$Resource.ccsfDashboardAp_SLDS0102+'/assets/styles/salesforce-lightning-design-system-vf.css',$Resource.ccsfDashboardAp_sldc)}" scripts="{!join(',',$Resource.ccsfDashboardAp_VisualStrap_Resources+'/js/bootstrap.min.js', $Resource.ccsfDashboardAp_jQuery, $Resource.ccsfDashboardAp_CCDA_StaticRes+'/js/jquerymin.js',$Resource.ccsfDashboardAp_CCDA_StaticRes+'/js/globalizemin.js',$Resource.ccsfDashboardAp_CCDA_StaticRes+'/js/dxchart.js',$Resource.ccsfDashboardAp_CCDA_StaticRes+'/js/knockout.js',$Resource.ccsfDashboardAp_CCDA_StaticRes+'/js/chartUtilJs.js',$Resource.ccsfDashboardAp_CCDA_Highcharts+'/js/highcharts.js',$Resource.ccsfDashboardAp_CCDA_Highcharts+'/js/modules/exporting.js')}" afterScriptsLoaded="{!c.doInit}"/> -->
+    <!--<aura:handler event="force:refreshView" action="{!c.doInit}" />-->
+    <ccsfDashboardAp:CollapsiblePanel header="CallidusCloud Commission Estimator">
+    <!--<c:S_Collapsible header="CallidusCloud Commission Estimator">-->
+        <div style="width: 100%">
+       <!-- <input type="text" aura:id="focus" style="height: 0;width: 0;border: 1px solid;"/>-->
+   <!-- <h2 class="head-title" style="background-color: inherit;color: rgb(22, 50, 92);font-weight: 400;font-size: 1.125rem;line-height: 1;margin: 0;text-transform: none;padding: 0rem 1rem 0rem;">Total Estimated Commission</h2>-->
+    <!--<ui:button label="Refresh" press="{!c.doInit}"/>-->
+    <div class="slds-spinner--large" aura:id="spin" style="position: relative;/*margin-left: 15%;*/">
+        <img src="/resource/ccsfDashboardAp__sldc_spinner" alt=""/>
+    </div>
+        <div class="visualstrap visualstrap-flatly visualstrap-lumen visualstrap-superhero" aura:id="estBlock" id="input-block" style="display:none;">
+        <div class="deskcont listnw">
+            <div class="aligned_cont" style="padding:1;">
+                <!--Commented by vijay for demo <div style="font-weight:bold;color:red" aura:id="errMsg">
+                	{!v.servError}
+                </div>-->
+                <!--<p class="heading" aura:id="heading">See your commissions Real-time</p> -->
+                
+                <div class="form-goup" aura:id="position" style="display:none;">
+                    
+                    Position
+                    <select class="slds-select" id="soPosition" aura:id="soPosition" onchange="{!c.getCalculations}">
+                        <aura:iteration items="{!v.positions}" var="po">
+                            <option value="{!po}">{!po}</option>
+                        </aura:iteration>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="visualstrap visualstrap-flatly visualstrap-lumen visualstrap-superhero" id="result-block" style="display:none;">
+        <div class="aligned_cont2 slds-size--1-of-2 slds-small-size--1-of-2 slds-medium-size--1-of-4 slds-large-size--1-of-3" style="padding:0 !important;">
+            <div class="data-table">
+                <div aura:id="highchart" class="case-container" style="min-width: 360px; max-width: 380px;height: 400px;/*margin-top: 50px;*/"></div>
+            </div>   
+            <div class="slds">
+            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal alighcls" >
+                <thead>
+                    <tr class="slds-text-heading--label">
+                        <th scope="col">
+                            <span class="slds-truncate">Bonus Component</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate price">Current Value</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate price">Forecasted Value</span>
+                        </th>
+                        <th scope="col">
+                            <span class="slds-truncate price">Difference{!v.estimates.size}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <aura:iteration items="{!v.estimates}" var="e">
+                        <tr class="slds-hint-parent" role="row">
+                            <td data-label="Bonus Component">
+                                <span class="slds-truncate price">{!e.bonusComponent}</span>
+                            </td>
+                            <td data-label="Current Value" >
+                                <span class="slds-truncate price">{!v.currencySymbl}
+                                    <span class="currency">{!e.currentValue}</span>
+                                </span>
+                            </td>
+                            <td data-label="Forecasted Value">
+                                <span class="slds-truncate">{!v.currencySymbl}
+                                    <span class="currency">{!e.forecastedValue}</span>
+                                </span>
+                            </td>
+                            <td data-label="Difference">
+                                <aura:if isTrue="{!e.difference > 0}">
+                                    <span class="slds-truncate green price">{!v.currencySymbl}
+                                        <span class="currency">{!e.difference}</span>
+                                    </span>
+                                    <aura:set attribute="else">
+                                        <span class="slds-truncate red price">{!v.currencySymbl}
+                                            <span class="currency">{!e.difference}
+                                            </span>
+                                        </span>
+                                    </aura:set>
+                                </aura:if>
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </tbody>
+            </table>
+            </div>
+            <span class="lastrunspan"><i>Estimator last run on <span id="lastrun"><ui:outputDate format="MM/dd/yyyy" value="{!v.opportunity.ccsfDashboardAp__Commission_Last_Run__c}"/></span></i></span>
+    	</div>
+    </div>
+    <footer title="" description="" icon="opportunity" style="text-align: right;margin: 15px 0px;bottom: 5px;left: 40%;">
+        <img src="/resource/ccsfDashboardAp__CCDA_Logo" class="logo" style="width:19%;"/><br/>
+    </footer>
+          </div>
+       </ccsfDashboardAp:CollapsiblePanel>
+    <!--</c:S_Collapsible>-->
+</aura:component>

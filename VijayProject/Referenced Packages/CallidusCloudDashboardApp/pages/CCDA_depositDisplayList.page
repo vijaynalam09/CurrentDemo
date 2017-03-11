@@ -1,0 +1,49 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DepositDisplayController" action="{!getDepositDisplays}" sidebar="false" showheader="false">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['depositdisplay.pageHeader']}" settingsImage="{!screenConstants['depositdisplay.settingsImage']}"></c:CCDA_CommonHeader>
+  
+  
+  <c:visualstrapblock >
+  <div class="deskcont listnw">
+  <apex:pageMessages id="errorMsg" />
+       <apex:form >
+             <div class="aligned_cont_btn clearfix">
+       <apex:commandButton value="Add New" action="{!redirectToAdd}" styleClass="btn-small right"/></div>
+       
+       <div class="aligned_cont">
+       <div class="crve-cont">
+       <apex:dataTable value="{!deposits}" var="deposit" styleClass="table table-hover"> 
+       
+             <apex:column id="edit">
+             <apex:commandLink action="{!redirectToEdit}" id="cmdLinkEdit">
+                <apex:param name="id" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['id']]}" />
+                <apex:outputText value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['depDisplayName']]}" />
+            </apex:commandLink> 
+        
+            </apex:column>
+          <!--   <apex:actionFunction action="{!redirectToDelete}" name="deleteResultField" >
+            <apex:param name="id" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['id']]}" />
+            </apex:actionFunction> -->
+            <apex:column id="delete">
+            
+            <apex:commandLink onclick="javascript:return confirm('Are you sure you want to delete?')" action="{!redirectToDelete}" id="cmdLinkDelete" >
+                <apex:param name="id" value="{!deposit[objectFieldMap[customObjectMap['depositDisplay']]['id']]}" />
+              
+               <apex:image url="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/delete.png')}"   />
+            </apex:commandLink> 
+            </apex:column>
+        </apex:dataTable>
+        </div>
+        </div>
+        </apex:form>
+        </div>
+  </c:visualstrapblock>
+  <script>
+  function confirmDelete() {
+  var isDelete = confirm('Are you sure you want to delete result field');
+  alert(isDelete);
+  if(isDelete == false) {
+    redirectToDelete();
+  }
+  }
+  </script>
+</apex:page>

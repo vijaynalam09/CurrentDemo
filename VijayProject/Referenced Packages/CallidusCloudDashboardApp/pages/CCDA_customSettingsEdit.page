@@ -1,0 +1,31 @@
+<apex:page controller="ccsfDashboardAp.CCDA_CustomSettingsController" action="{!getWebserviceInfo}" sidebar="false" showheader="false">
+ <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['customSettings.pageHeader']}" settingsImage="{!screenConstants['customSettings.settingsImage']}"></c:CCDA_CommonHeader>
+ <div class="aligned_cont2">
+ <apex:pageMessages id="errorMsg" />
+     <apex:form >
+       <c:formblock alignment="vertical">
+         <c:formgroup >
+           <h3> <apex:outputLabel styleClass="form-control"  value="{!webServiceData[objectFieldMap[customObjectMap['webServiceInfo']]['name']]}"></apex:outputLabel></h3>
+         </c:formgroup>
+         <c:formgroup >
+            <apex:inputText styleClass="form-control" html-placeholder="{!screenConstants['customSettings.webServiceUrl']}" title="{!screenConstants['customSettings.webServiceUrl']}" value="{!webServiceData[objectFieldMap[customObjectMap['webServiceInfo']]['webServiceUrl']]}"></apex:inputText>
+         </c:formgroup>
+         
+         <!-- Manju commented    
+         <c:formgroup >
+            <apex:inputText styleClass="form-control" html-placeholder="{!screenConstants['customSettings.userName']}" title="{!screenConstants['customSettings.userName']}" value="{!webServiceData[objectFieldMap[customObjectMap['webServiceInfo']]['userName']]}"></apex:inputText>
+         </c:formgroup> -->
+
+         
+         <!--  <c:formgroup > -->
+           <!-- <apex:inputText styleClass="form-control" html-placeholder="{!screenConstants['customSettings.password']}" title="{!screenConstants['customSettings.password']}" value="{!webServiceData[objectFieldMap[customObjectMap['webServiceInfo']]['password']]}"></apex:inputText>  -->
+           
+
+          <!-- <apex:inputSecret styleClass="form-control" html-placeholder="{!screenConstants['customSettings.password']}" title="{!screenConstants['customSettings.password']}" value="{!userPassword}"></apex:inputSecret> -->
+          <!--  <apex:inputHidden value="{!webServiceData[objectFieldMap[customObjectMap['webServiceInfo']]['password']]}"></apex:inputHidden> -->
+          <!-- </c:formgroup>   -->
+       </c:formblock>
+       <apex:commandButton value="Save" action="{!saveWebServiceConfig}" styleClass="btn-default btn-lg" />
+     </apex:form>
+ </div>
+</apex:page>

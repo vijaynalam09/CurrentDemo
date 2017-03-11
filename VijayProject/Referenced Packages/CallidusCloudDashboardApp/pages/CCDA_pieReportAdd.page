@@ -1,0 +1,104 @@
+<apex:page controller="ccsfDashboardAp.CCDA_ReportController" action="{!setReportSaveMode}" sidebar="false" showheader="false">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!header}" settingsImage="{!screenConstants['piechart.settingsImage']}"></c:CCDA_CommonHeader>
+  <style>
+          input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+  </style>
+  <div class="aligned_cont2">
+  <apex:pageMessages id="mymsg" />
+  <apex:form id="frmAddReport">
+          <script type="text/javascript">
+            function getResultTypeValue(id){
+                displayFunction(document.getElementById(id).value);   
+            }
+            function changeColor(elmnt){
+                elmnt.style.color='#000000';
+            }
+          </script> 
+          
+        <apex:actionFunction action="{!resultTypeClick}" name="displayFunction"  rerender="rerendersection2">
+                <apex:param name="resultType" value="{!$Component.resultType}"/>
+        </apex:actionFunction>
+         
+        
+      <c:formblock alignment="vertical">
+        <c:formgroup >
+           <h3> <apex:outputText value="{!screenConstants['piechart.sectionHeader']}" /></h3>
+        </c:formgroup>
+ 
+         <c:formgroup >
+         {!screenConstants['piechart.Name']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['piechart.Name']}" title="{!screenConstants['piechart.Name']}" value="{!report[objectFieldMap[visualComponents['Pie Chart']]['Name']]}"></apex:inputText>
+        </c:formgroup>
+      
+        <c:formgroup >
+        {!screenConstants['piechart.DisplayName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['piechart.DisplayName']}" title="{!screenConstants['piechart.DisplayName']}" value="{!report[objectFieldMap[visualComponents['Pie Chart']]['DisplayName']]}"></apex:inputText>
+        </c:formgroup> 
+       
+
+        <c:formgroup >
+        {!screenConstants['piechart.SortOrder']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['piechart.SortOrder']}" title="{!screenConstants['piechart.SortOrder']}" value="{!report[objectFieldMap[visualComponents['Pie Chart']]['SortOrder']]}"></apex:inputText>
+        </c:formgroup>  
+        
+               
+        <c:formgroup >
+        {!screenConstants['piechart.ResultType']}   
+         <label class="select-box">
+          <apex:selectList onchange="getResultTypeValue('{!$Component.resultType}');changeColor(this);"  id="resultType" size="1" value="{!report[objectFieldMap[visualComponents['Pie Chart']]['ResultType']]}" styleClass="form-control" html-placeholder="{!screenConstants['piechart.ResultType']}" title="{!screenConstants['piechart.ResultType']}">  
+            <apex:selectOptions value="{!resultTypes}"/>
+          </apex:selectList>
+         </label>
+        </c:formgroup>
+
+        <!--
+            <c:formgroup >
+            <apex:outputPanel id="rerendersection2">
+               <h3> <apex:outputText value="Result List" /></h3>                    
+          
+                      <apex:selectList id="resultType" size="1" value="{!report[objectFieldMap[visualComponents['Pie Chart']]['ResultType']]}" styleClass="form-control" html-placeholder="{!screenConstants['piechart.ResultType']}" title="{!screenConstants['piechart.ResultType']}">  
+                        <apex:selectOptions value="{!resultValues}"/>
+                      </apex:selectList>
+            </apex:outputPanel>
+            </c:formgroup>        
+        -->
+        <c:formgroup >
+               <h3> <apex:outputText value="{!screenConstants['piechart.ResultList']}" /></h3>       
+            <apex:dataList id="rerendersection2" value="{!reportLists}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.repObject[objectFieldMap[rep.customObjName]['depDisplayName']]}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+        
+        <c:formgroup >
+
+       
+       <h3> <apex:outputText value="{!screenConstants['visualizationPeriod']}" /></h3>
+       <!-- <b>  <apex:outputText value="{!screenConstants['report.single']}" /></b>-->
+       <b>Default :</b>
+       <label class="select-box">
+       <apex:selectList value="{!visualizationTimeFrame[0].defaultTimeFrame}" size="1" onchange="changeColor(this);">
+            <apex:selectOptions value="{!visualizationTimeFrame[0].visualizationTimeFrameOptions}"/>                  
+       </apex:selectList>
+       </label>      
+       <br/>  
+       
+            <apex:dataList value="{!visualizationTimeFrame}" var="rep" styleClass="list_style"> 
+                
+                     <apex:inputCheckbox value="{!rep.selected}" id="selectRep"></apex:inputCheckbox>
+                     <apex:outputText value="{!rep.customObjName}"/>
+             </apex:dataList>
+            
+            
+        </c:formgroup>
+         
+      </c:formblock> 
+      <apex:commandButton value="Save" action="{!saveReportConfig}" style="color:white !important;" styleClass="btn-default btn-lg" rendered="{!showSaveButton}" />
+  </apex:form> 
+  </div>
+</apex:page>

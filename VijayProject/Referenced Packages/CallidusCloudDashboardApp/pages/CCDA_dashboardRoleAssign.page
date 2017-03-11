@@ -1,0 +1,26 @@
+<apex:page controller="ccsfDashboardAp.CCDA_DashboardConfigController" action="{!getRolesAssigned}" sidebar="false" showheader="false" >
+  
+<div class="">
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['dashRole.pageHeader']}" settingsImage="{!screenConstants['dashRole.settingsImage']}"></c:CCDA_CommonHeader>
+  <div class="aligned_cont2">
+   <apex:pageMessages id="mymsg" />
+  <apex:form id="frmAddDashboard">
+      <c:formblock alignment="vertical">
+        
+        <c:formgroup >
+          <h3> <apex:outputText value="{!dashboard[objectFieldMap[customObjectMap['dashboardConfig']]['dashboardName']]}" /></h3>
+             <apex:dataList value="{!dashboardRoles}" var="dashRole" styleClass="list_style"> 
+                
+                    <apex:inputCheckbox value="{!dashRole.selected}" id="selectRep"></apex:inputCheckbox>
+                    <apex:outputText value="{!dashRole.roleObject[objectFieldMap[dashRole.customObjName]['roleName']]}"/>
+             </apex:dataList>
+        </c:formgroup>
+        
+      </c:formblock> 
+      <div class="tesst">
+      <apex:commandButton value="Save" action="{!saveDashboardRoleMap}" styleClass="btn-default btn-lg" rendered="{!showSaveButton}"/>
+      </div>
+  </apex:form> 
+  </div>
+  </div>
+</apex:page>

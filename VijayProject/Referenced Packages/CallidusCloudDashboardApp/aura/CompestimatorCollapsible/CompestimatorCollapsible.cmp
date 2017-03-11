@@ -1,0 +1,5 @@
+<aura:component access="global" implements="force:appHostable,flexipage:availableForAllPageTypes">
+	<ccsfDashboardAp:CollapsiblePanel header="Calliduscloud's Commission estimator">
+      <ccsfDashboardAp:CallidusCloudCompEstimator />  
+    </ccsfDashboardAp:CollapsiblePanel>
+</aura:component>

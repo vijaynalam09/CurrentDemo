@@ -1,0 +1,71 @@
+<apex:page controller="ccsfDashboardAp.CCDA_CustomSettingsController" sidebar="false" showheader="false">
+ <script type="text/javascript">
+    function changeColor(elmnt){
+        elmnt.style.color='#000000';
+    }
+ </script>
+ <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" screenTitle="{!screenConstants['customSettings.pageHeader']}" settingsImage="{!screenConstants['customSettings.settingsImage']}"></c:CCDA_CommonHeader>
+ <style>
+      input:not([type=submit]), textarea[placeholder], select[placeholder]{
+        color: #000 !important;
+    }
+  </style>
+ <c:visualstrapblock >
+   <div class="deskcont listnw">
+   
+     <apex:form >
+       <div class="aligned_cont">
+       
+       <!--   <div class="crve-cont">
+           <apex:dataTable value="{!webServiceInfoList}" var="webService" styleClass="table table-hover">
+              <apex:column id="edit">
+                <apex:commandLink action="{!redirectToEdit}" id="cmdLinkEdit">
+                  <apex:param name="name" value="{!webService['Name']}" assignTo="{!webServiceName}"/>
+                  <apex:outputText value="{!webService['Name']}" />
+                </apex:commandLink>
+              </apex:column>
+           </apex:dataTable>
+         </div> -->
+         
+         <!-- Manju Added Start -->
+         
+         <c:formgroup > 
+         {!screenConstants['customSettings.subdomain']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['customSettings.subdomain']}" title="{!screenConstants['customSettings.webServiceUrl']}" value="{!subDomain_new}"></apex:inputText>
+         </c:formgroup>
+         <c:formgroup >
+         {!screenConstants['customSettings.userName']}
+            <apex:inputText styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['customSettings.userName']}" 
+                title="{!screenConstants['customSettings.userName']}"
+                value="{!userName_new}"></apex:inputText>
+         </c:formgroup>
+
+         
+        <c:formgroup > 
+        {!screenConstants['customSettings.password']}         
+            <apex:inputSecret styleClass="form-control" onkeypress="changeColor(this);" html-placeholder="{!screenConstants['customSettings.password']}" 
+                title="{!screenConstants['customSettings.password']}" value="{!password_new}"></apex:inputSecret>
+        </c:formgroup>  
+        
+        <!--
+        <c:formgroup >
+           Measurement Rule
+           
+           <label class="select-box" >
+              <apex:selectList value="{!selectedMeasurementRule}" size="1" styleClass="form-control" >
+                  <apex:selectOptions value="{!measurementOptions}"/>
+                  </apex:selectList><br/><br/>
+           </label> 
+          
+        </c:formgroup>  
+        -->     
+        <apex:commandButton value="Save" action="{!saveUserNamePWD}" style="color:white !important;" styleClass="btn-default btn-lg" />              
+              
+         <!-- Manju Added End -->
+         
+       </div>
+     </apex:form>
+     
+   </div>
+ </c:visualstrapblock>
+</apex:page>

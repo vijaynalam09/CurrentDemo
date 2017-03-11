@@ -1,0 +1,15 @@
+<aura:component access="global" implements="flexipage:availableForAllPageTypes,force:hasRecordId">
+  <aura:attribute type="String" name="header" />
+    <aura:attribute name="body" type="Aura.Component[]"/>
+    <div style="background-color:#f4f6f9">
+         <div class="msg">
+             <div style="margin-left: 5px">
+                 <div class="collaps" onclick="{!c.ToggleCollapse}">❯</div>                 
+                 <div style="font-size: 16px;font-weight: 1500;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width:85%;">{!v.header}</div>
+             </div>
+        </div>
+        <div class="container hide">
+            {!v.body}
+        </div>
+    </div>	
+</aura:component>

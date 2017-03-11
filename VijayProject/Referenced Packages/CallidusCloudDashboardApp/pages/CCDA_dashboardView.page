@@ -1,0 +1,456 @@
+<apex:page sidebar="false"  cache="true"  showheader="false" docType="html-5.0" controller="ccsfDashboardAp.CCDA_DashboardController" id="page1" action="{!fetchReportForInitialDisplay}"  > 
+                <!--   <apex:includeScript value="{!$Resource.jsonminified}" /> -->
+ <style type="text/css">
+         .slide-container #depositblock .flex-viewport{
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05); 
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e3e3e3;
+            margin-bottom: 15px;
+            margin-top: 19px;
+            background-color: #fff;
+        }
+
+
+
+        .slide-container #depositblock .flex-viewport .well {
+        background-color: #fff !important;
+        border: none !important;
+        box-shadow: none !important;
+        }
+
+        .slide-container ul.slides li .well canvas{
+        width:100% !important;
+        }
+            body div#outerdiv {
+                overflow: auto !important;
+
+            }
+            
+             #innerscrolldiv {
+                overflow: auto;
+                overflow-x: hidden;
+            }
+            .flexslider00.col-md-4,
+            .flexslider01.col-md-4,
+            .flexslider02.col-md-4,
+            .flexslider03.col-md-4 {
+                padding:0;
+            }
+            .slide-container ul {
+                list-style:none;
+                margin:0;
+                padding:0;
+            }
+            .slide-container li {
+                
+                margin:0;
+                padding:0;
+            }
+              .slides li.clone {
+                display :none ;
+                margin:0;
+                padding:0;
+            }
+            .slide-container .visualstrap .well {
+                min-height:526px;
+            }
+            .slide-container .visualstrap .col-md-4 {
+                width:100%;
+                box-sizing:border-box;
+            }
+            .flex-control-nav {
+                text-align:center;
+            }
+            .flex-control-nav li {
+                display:inline-block;
+                margin:0 0.2em;
+            }
+            .flex-control-nav a {
+                display:block;
+                text-indent:-9999px;
+                width:12px;
+                height:12px;
+                background:#bbb;
+                border-radius:50%;
+            }
+            .flex-direction-nav {
+                display:none;
+            }
+            .flex-control-nav a.flex-active {
+                background:#2a94d6;
+            }
+            #loading {
+                position:fixed;
+                left:0;
+                top:0;
+                right:0;
+                bottom:0;
+                background:#fff;
+                z-index:999;           
+            }
+            #loading img {
+                position:absolute;
+                left:50%;
+                top:50%;
+            }
+            .Range-selector {
+                text-align:center;
+            }
+            .Range-selector a {
+                display:inline-block;
+            }
+            .Range-selector div.selMonth_box {
+                display: block;
+                vertical-align: middle;
+                height: 43px;
+            }
+            .Range-selector span {
+                font-size:15px;
+                font-size: 15px;
+                display: inline-block;
+                margin:0 1em;
+            }
+           .visualstrap .container {
+               width:100%;
+          }
+          .statusStyle {
+               //background:url("{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/loading.gif')}") no-repeat 0 0;  
+               background:url("{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/loading.gif')}");
+               /*padding-left:20px; 
+               margin-left:10px; 
+               padding-bottom:5px; */
+          }
+          .selMonth_box select{
+            height: 30px;
+
+           }
+            .selMonth_box select option{
+            color: black;
+           
+           
+           }
+          
+          .setl_box{
+                text-align: center;
+                padding: 1.5eem;
+                margin: 15px 0;
+            }
+            .setl_box select{
+                padding:0.7em;
+            }
+        .cc_preloader {
+            clear:both;
+            display:block;
+        }
+        .setl_box span.statusStyle,
+        .cc_preloader span.statusStyle{
+                background: url("{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/loading.gif')}");
+                background-size: cover;
+                width: 74px;
+                height: 25px;
+                display: inline-block;
+                background-repeat: no-repeat;
+                background-size: 22px 22px;
+                padding: 3px 0 0px 25px;
+                margin:0;
+                line-height: 19px;
+        }
+        
+         .loadingClass span{
+                background: url("{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Icons/loading.gif')}");
+                background-size: cover;
+                width: 74px;
+                height: 25px;
+                display: inline-block;
+                background-repeat: no-repeat;
+                background-size: 22px 22px;
+                line-height: 19px;
+                padding: 1.5eem;
+                margin: 15px 0;
+                text-align: center;
+                background-postion:center top;
+                padding-left:30px;
+        }
+        
+        .visualstrap .well .well {
+            margin: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-shadow: 0 0 0 transparent;
+            -webkit-box-shadow: 0 0 0 transparent;
+        }
+        div.visualstrap .well {
+            margin: 1.5em 0;
+        }
+        .dxc-title {
+            top: 0;
+        }
+        
+        .backButton1 {
+        position: absolute;
+    left: 20px;
+    top: 20px;
+    height: 25px;
+    width: 180px;
+    font-size: 14px;
+    color: white!important;
+    padding: 0;
+    border: 0;
+    text-indent: -8px;
+}
+.backButton:active {
+ background-position: -25px 0;
+}
+
+    </style>  
+                
+<apex:includescript value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'js/jsonminified.js')}" />
+<script> 
+(function(){try{var a=navigator.userAgent; 
+if((a.indexOf('Salesforce')!=-1)&&(a.indexOf('iPhone')!=-1||a.indexOf('iPad')!=-1)&&(a.indexOf('OS/8')!=-1||a.indexOf('OS 8')!=-1)&&(a.indexOf('Safari')==-1)){ 
+var s=document.createElement('style'); 
+s.innerHTML="html,html body{overflow: auto;-webkit-overflow-scrolling:touch;}body{position:absolute;left:0;right:0;top:0;bottom:0;}"; 
+document.getElementsByTagName('head')[0].appendChild(s);}}catch(e){}})(); 
+</script> 
+<script>
+
+window.onload = checkClose
+function checkClose() {
+    //alert('inside this');
+    var str = {!closeWindow};
+    document.getElementById("container").style.display = "block";
+    $('.loadingClass').css('display', 'none');
+    if (str == true) {
+       document.getElementById("container").style.display = "block";
+       $('.loadingClass').css('display', 'none');
+    }
+    else { 
+       $('.loadingClass').css('display', 'block');
+       fetchDashbrds();
+    }
+}
+function complete(){
+  
+  getInitialData();
+}
+
+function left(){
+    localStorage.setItem("a",null);
+    localStorage.setItem("ct",null);
+    leftmon();
+                                                            
+                                                            
+}
+
+function right(){
+    localStorage.setItem("a",null);
+    localStorage.setItem("ct",null);
+    rightmon();
+                                                            
+                                                            
+}
+</script>
+<apex:stylesheet value="{!URLFOR($Resource.ccsfDashboardAp__CCDA_StaticRes, 'Styles/styles.css')}" />      
+
+<apex:outputPanel id="main">
+<header class="bg-anchor tc ptm ng-scope" title=" AE Dashboard" description="" icon="contact" id="header">
+  <div class="icon icon--d sq-60 icon--dashboard"></div> 
+  <h1 class="f1 wht text-shadow man ng-binding">
+     {!dashboard[objectFieldMap[customObjectMap['dashboardConfig']]['dashboardName']]} 
+  </h1>      
+  <c:CCDA_CommonHeader showSettingIcon="{!showSettingIcon}" settingsImage="{!screenConstants['dashboard.settingsImage']}"></c:CCDA_CommonHeader>
+  <ul class="Range-selector list-horizontal grid bg-5 wht font-size-icon lh-44 border-top border-top--4 phm" role="menubar">
+    <li class="size-1of2 grid-cell tc">
+      
+            <apex:form >
+         <div id="divBackButton">
+            <apex:commandLink id="backBtn" styleclass="backButton" value="Back" action="{!redirectToDashboardSelection}"  rendered="{!moreThanOneDashboard}"/>  
+          </div>
+            <div class="selMonth_box">
+                <label class="select-box">
+                 <apex:selectList id="monthsel" value="{!month}" size="1"> 
+                                  <apex:actionSupport status="loadingStatus" event="onchange"  action="{!monthSelected}">
+                                    
+                                  </apex:actionSupport>
+                                      <apex:selectOptions value="{!priorMonths}" />        
+                  </apex:selectList>
+                  </label>
+            </div>
+          </apex:form>
+
+                     
+    </li>
+  </ul>
+</header> 
+<apex:form id="dashboard_form">
+    <apex:actionFunction action="{!fetchDashboards}" status="loadingStatus" name="fetchDashbrds" oncomplete="complete();" reRender="false" >
+       <apex:param name="test" value="IDD" assignTo="{!testvar}" />
+    </apex:actionFunction>
+      <apex:actionFunction name="getInitialData" />
+        <apex:actionFunction name="callfind" action="{!redirectToDetaiPageView}"  />
+<apex:inputHidden value="{!periodNameHidden}" id="myHiddenField1"/>
+<apex:inputHidden value="{!resultNameHidden}" id="myHiddenField2"/>
+<apex:inputHidden value="{!resultTypeHidden}" id="myHiddenField3"/>
+<apex:inputHidden value="{!resultDisplayNameHidden}" id="myHiddenField4"/>
+<apex:inputHidden value="{!dashboardIdHidden}" id="myHiddenField5"/>
+<apex:inputHidden value="{!currentMonthHidden}" id="myHiddenField6"/> 
+<apex:inputHidden value="{!currentTimeRangeHidden}" id="myHiddenField7"/>
+<apex:inputHidden value="{!originalArgumentHidden}" id="myHiddenField8"/>
+<apex:inputHidden value="{!originalValueHidden}" id="myHiddenField9"/>
+
+    <!--
+    <div id="loading">
+       <apex:image url="{!URLFOR($Resource.CCDA_StaticRes, 'Icons/loading.gif')}"  />
+       <span>Loading</span>
+    </div> 
+    -->
+<body>
+    <c:importvisualstrap /> 
+    
+    <apex:outputText id="outercontainer" value="">
+    <div id="container" class="container">
+   <c:visualstrapblock style="padding:5px" >   
+   <apex:variable var="countDeposit" value="{!0}"/>
+   <apex:variable var="flexiIndex" value="{!0}"/> 
+   <apex:variable var="counter" value="{!counter}"/> 
+        <!-- deposit -->
+        <apex:repeat value="{!reportComponentSortIndexList}" var="index">    
+             <c:row >
+             <div class="slide-container visualstrap ">
+     <div class="flexslider{!flexiIndex} col-md-4" id="depositblock" > 
+     
+      
+      <ul class="slides">
+     <apex:variable var="subIndex" value="{!0}" />
+     <apex:repeat value="{!reportComponentMaps[index]}" var="component"> 
+                 <li id="deposit{!countDeposit}" class="deposit">
+                 
+                 
+                 <div class="well">
+                 <div class="dxc-title">
+                        {!component.reportConfig[objectFieldMap[visualComponents[component.reportType]]['DisplayName']]}
+                        
+                 
+                 </div> 
+                 <apex:outputPanel rendered="{!component.showTimePeriodSelection}" >
+                 <div class="setl_box">
+                     <label class="select-box">
+                     <apex:selectList value="{!component.currentVisualizationtimeFrame}" size="1">
+                          <apex:actionSupport status="loadingStatus" event="onchange"  action="{!getReportBySelectedTimeFrame}" reRender="reportId">
+                             <apex:param name="mainIndex" value="{!index}" assignTo="{!mainIndex}" />
+                             <apex:param name="subIndex" value="{!subIndex}" assignTo="{!subIndex}" />
+                             <!-- <apex:param name="timeRange" value="{!component.currentVisualizationtimeFrame}"  assignTo="{!timePeriod}" /> -->
+                          </apex:actionSupport>
+                       <apex:selectOptions value="{!component.visualizationTimeFrameOptions}"/>                  
+                     </apex:selectList>
+                     </label>
+                 </div>
+                 </apex:outputPanel>
+                 <div class="cc_preloader"><apex:actionStatus id="loadingStatus" startText="Loading.." stopText="" startStyleClass="statusStyle" /></div>
+                 <apex:outputPanel id="reportId">
+                 <div id="loadingDiv" class="loadingClass" style="display:none;text-align:center;">
+                    <div class="slds-spinner--large">
+                        <img src="{!$Resource.sldc_spinner}" alt="" style="height:45px;width:45px;"/>
+                     </div>
+                 </div>
+                       
+                     <apex:outputText rendered="{!component.reportType == 'Pie Chart'}" value="">
+                          <c:CCDA_PieChart reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}" />
+                          <apex:variable var="countDeposit" value="{!countDeposit + 1}"/>
+                     </apex:outputText>
+                     
+                     <apex:outputText rendered="{!component.reportType == 'Large Number Display'}" value="">
+                     
+                         <c:CCDA_LargeNumberDisplay reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}" />
+                         <apex:variable var="countDeposit" value="{!countDeposit + 1}"/>
+                         
+                          
+                     </apex:outputText>
+                     
+                     <apex:outputText rendered="{!component.reportType == 'List View'}" value="">
+                     
+                         <c:CCDA_ListView reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}"/>
+                         <apex:variable var="countDeposit" value="{!countDeposit + 1}"/>
+                        
+                          
+                     </apex:outputText>
+                     
+                     <apex:outputText rendered="{!component.reportType == 'Line Trend'}" value="">
+                    
+                         <c:CCDA_LineTrend reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}" />
+                         <apex:variable var="countDeposit" value="{!countDeposit + 1}"/>
+                         
+                          
+                     </apex:outputText>
+                     
+                     <apex:outputText rendered="{!component.reportType == 'Gauge'}" value="">
+                     
+                         <c:CCDA_Gauge reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}" />
+                         <apex:variable var="countDeposit" value="{!countDeposit + 1}"/>
+                         
+                          
+                     </apex:outputText>
+                     
+                     <apex:outputText rendered="{!component.reportType == 'Bar Chart'}" value="">
+                     
+                         <c:CCDA_BarChart reportObject="{!component}"  count="{!counter}{!countDeposit}" dashboardObject="{!dashboard}" month="{!month}" timeRange="{!timeRange}" showErrorMsg="{!closeWindow}"/>
+                         <apex:variable var="countDeposit" value="{!countDeposit + 1}" />
+                         
+                          
+                     </apex:outputText>
+                     
+                     
+                  </apex:outputPanel>
+                  </div> 
+                
+                  </li>
+             <apex:variable var="subIndex" value="{!subIndex + 1}" /> 
+          </apex:repeat>
+
+        </ul>
+       
+        <apex:variable var="flexiIndex" value="{!flexiIndex + 1}"/>        
+        </div>
+        </div>
+       </c:row>
+     </apex:repeat>  
+     
+    </c:visualstrapblock>  
+   </div>
+   </apex:outputText>
+   
+   
+   <script src="{!URLFOR($Resource.CCDA_StaticRes, 'js/easysliderjs.js')}" ></script>
+   
+    <script type="text/javascript">
+                    
+    
+
+                   $(function() {  
+                   
+                   var x = $("div[class^='flexslider']").length;
+                   for(var i = 0; i < x; i++){
+                        var j = '.flexslider'+i+' ul';
+                        var k = '.flexslider'+i;
+                        if($(j).find('li').length > 1){
+                            $(k).flexslider({
+                                   
+                                   animation: "slide",
+                                   slideshow: false,
+                                   after: function(){
+                                          $(".clone").html('<div style="height:20px"></div>');
+                                   }
+                            });
+                         }
+                  }
+                  });
+   </script>
+
+              
+</body>
+<!--</html>-->
+</apex:form>  
+</apex:outputPanel>
+</apex:page>
