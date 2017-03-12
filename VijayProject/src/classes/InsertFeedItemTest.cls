@@ -1,6 +1,7 @@
 @isTest
 public class InsertFeedItemTest
 {
+	//This method is to test many records from feeditem object
 static testMethod void testfeed() {
     Task t=new Task(Subject='test_S',Description='test_D',ActivityDate=NULL,ccsp__Author__c='test_A',ccsp__ObjectiveId__c='Test_oId',Spm_status__c='test_S');
     insert t;
